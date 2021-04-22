@@ -1,12 +1,22 @@
 import React from 'react';
-
-import './App.css';
+import {
+  Switch,
+  Route,
+} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Layout from './components/layout/Layout';
+import Movimiento from './components/Movimiento';
 
 function App() {
   return (
-    <div className="App">
-     App Ticket
-    </div>
+    <Router>
+        <Layout>
+          <Switch>
+              <Route path="/movimiento" component={Movimiento} />
+          </Switch>
+        </Layout>
+    </Router>
+      
   );
 }
 
