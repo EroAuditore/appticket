@@ -6,13 +6,15 @@ import {
 import { BrowserRouter as Router } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Movimiento from './components/Movimiento';
+import Login from './components/Login/Login';
 
 function App() {
   return (
     <Router>
         <Layout>
           <Switch>
-              <Route path="/movimiento" component={Movimiento} />
+              <Route path="/movimientos" component={Movimiento} />
+              <Route path="/" exact component={Login} />
           </Switch>
         </Layout>
     </Router>
