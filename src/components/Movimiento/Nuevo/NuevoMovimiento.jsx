@@ -9,7 +9,7 @@ import {
   Paper,
   Tab,
   Tabs,
-  Box,
+
   Fab,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -135,7 +135,7 @@ const NuevoMovimiento = () => {
     solicitudId: null,
     idAgente: 0,
     idCliente: 0,
-    Archivo: [],
+    
   });
 
   const calculartotal = () => {
@@ -342,9 +342,8 @@ const NuevoMovimiento = () => {
   };
 
   const handleFileUpload = (file) => {
-    setMovimiento({
-      ...movimiento,
-      Archivo: file,
+    setArchivo({
+      archivo: file,
     });
   };
 
