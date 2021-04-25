@@ -62,7 +62,14 @@ const useStyles = makeStyles((theme) => ({
 
 const NuevoMovimiento = () => {
   const classes = useStyles();
-  const {setAgentesList, setClientesList, depositos, setDepositos} = useContext(MovimientoContext);
+  const {setAgentesList, 
+        setClientesList, 
+        depositos, 
+        setDepositos,
+        retornos,
+        setRetornos 
+      } = useContext(MovimientoContext);
+  
   const [activeTab, setActiveTab] = useState(0);
   const [ModalState, setModalState] = useState(false);
   const [ModalStateFacturas, setModalStateFacturas] = useState(false);
@@ -92,7 +99,7 @@ const NuevoMovimiento = () => {
     retornoMonto: "",
     comentarioRetorno: "",
     cuentaRetorno: "",
-    formaRetorno: "",
+    formaRetorno: "Efectivo",
     Banco: "",
     Cuenta_clabe: "",
     codigoSwift: "",
@@ -177,13 +184,19 @@ const NuevoMovimiento = () => {
     setTotalRetornos(
       parseFloat(totalRetornos) + parseFloat(retorno.retornoMonto)
     );
-    //dispatch(addRetorno(retorno));
+    setRetornos([...retornos, retorno ]);
     setRetorno({
       _id: uuidv4(),
       nombreRetorno: "",
       entidadRetorno: "",
       retornoMonto: "",
       comentarioRetorno: "",
+      cuentaRetorno: "",
+      formaRetorno: "Efectivo",
+      Banco: "",
+      Cuenta_clabe: "",
+      codigoSwift: "",
+      direccionBanco: "",
     });
   };
 
@@ -243,19 +256,21 @@ const NuevoMovimiento = () => {
   const handleDeleteClick = (obj) => {
     switch (activeTab) {
       case 0:
-        //dispatch(deleteDeposito(obj._id));
         setDepositos(
           [...depositos.filter(
             depo => depo._id !== obj._id
           )]
-        )
-
+        );
         setTotalDepositos(
           parseFloat(totalDepositos) - parseFloat(obj.depositoMonto)
         );
         break;
       case 1:
-        //dispatch(deleteRetorno(obj._id));
+        setRetornos(
+          [...retornos.filter(
+            ret => ret._id !== obj._id
+          )]
+        )
         setTotalRetornos(
           parseFloat(totalRetornos) - parseFloat(obj.retornoMonto)
         );

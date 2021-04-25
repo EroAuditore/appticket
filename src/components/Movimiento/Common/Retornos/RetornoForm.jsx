@@ -37,7 +37,6 @@ function renderForm(tipo, handleOnChange) {
               name="nombreRetorno"
               label="Nombre del titular"
               fullWidth
-              
               size="small"
               onChange={handleOnChange}
             />

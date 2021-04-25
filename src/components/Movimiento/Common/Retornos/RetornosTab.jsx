@@ -12,8 +12,7 @@ import NumberFormat from "react-number-format";
 
 const RetornosTab = (props) => {
   const { handleDeleteClick } = props;
-  //const data = useSelector((state) => retornoSelector(state));
-  const { depositos : data } = useContext(MovimientoContext);
+  const { retornos : data } = useContext(MovimientoContext);
 
   return (
     <Table aria-label="simple table">

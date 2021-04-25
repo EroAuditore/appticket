@@ -10,6 +10,8 @@ const MovimientoProvider = ({children}) => {
     const [agentesList, setAgentesList] = useState([]);
     const [clientesList, setClientesList] = useState([]);
     const [depositos, setDepositos] = useState([]);
+    const [retornos, setRetornos] = useState([]);
+    const [comisiones, setComisiones] = useState([]);
     
     return ( 
         <MovimientoContext.Provider
@@ -21,7 +23,11 @@ const MovimientoProvider = ({children}) => {
                 clientesList,
                 setClientesList,
                 depositos,
-                setDepositos
+                setDepositos,
+                retornos,
+                setRetornos,
+                comisiones,
+                setComisiones
             }}
         >
             {children}
