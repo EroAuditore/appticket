@@ -1,4 +1,6 @@
 import React, { Fragment, useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 import {
   Typography,
   Button,
@@ -10,7 +12,6 @@ import {
   Box,
   Fab,
 } from "@material-ui/core";
-import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import AddIcon from "@material-ui/icons/Add";
@@ -72,7 +73,7 @@ const NuevoMovimiento = () => {
         comisiones,
         setComisiones 
       } = useContext(MovimientoContext);
-  
+  const history = useHistory();
   const [activeTab, setActiveTab] = useState(0);
   const [ModalState, setModalState] = useState(false);
   const [ModalStateFacturas, setModalStateFacturas] = useState(false);
@@ -83,6 +84,7 @@ const NuevoMovimiento = () => {
   const [startCounter, setStartCounter] = useState(0);
   const [selectedTake, setSelectedTake] = useState({});
   const [alertState, setAlertState] = useState(false);
+  const [archivo, setArchivo] = useState([]);
 
   
   const [deposito, setDeposito] = useState({
@@ -293,6 +295,38 @@ const NuevoMovimiento = () => {
 
   const OnSaveMovimiento = () => {
     //dispatch(startSaveMovimiento(movimiento));
+    const data = new FormData();
+    data.append('file', archivo[0]);
+
+    const movimientoObj = {
+      movimiento,
+      depositos,
+      retornos,
+      comisiones,
+    };
+
+    const json = JSON.stringify(movimientoObj);
+    data.append('movimientoObj', json);
+    try {
+      const saveMovimiento = async () => {
+        const response = await axios.post(process.env.REACT_APP_API + `/movimiento/nuevo`, 
+        data, 
+        {
+          Accept: 'application/json',
+          'content-type': 'multipart/form-data',
+        }).then((response) => {
+          history.push("/movimientos");
+          console.log("Saved");
+        }, (error) => {
+          console.log("error", error);
+        });
+        
+      }
+      saveMovimiento();
+
+    }catch(e){
+      console.log("Error al guardar", e);
+    }
   };
 
   const onCalculoPorcentaje = () => {
