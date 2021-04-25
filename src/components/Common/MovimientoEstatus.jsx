@@ -8,31 +8,25 @@ const MovimientoEstatus = ({ data }) => {
   switch (data) {
     case "pendiente": {
       renderText = "POR REVISAR";
-      renderClass = "badge badge-secondary";
+      renderClass = "badge bg-secondary";
       break;
     }
 
     case "generado":
     case "depositado": {
       renderText = "GENERADO";
-      renderClass = "badge badge-success";
+      renderClass = "badge bg-success";
       break;
     }
     case "comisionado": {
       renderText = "Generado";
-      renderClass = "badge badge-danger";
+      renderClass = "badge bg-danger";
       break;
     }
-
-    case "depositado": {
-      renderText = "Pagado";
-      renderClass = "badge badge-warning";
-      break;
-    }
-
+    
     default: {
       renderText = "POR REVISAR";
-      renderClass = "badge badge-secondary";
+      renderClass = "badge bg-secondary";
       break;
     }
   }

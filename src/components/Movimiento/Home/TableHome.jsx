@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
@@ -7,11 +7,14 @@ import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 
 import NumberFormat from "react-number-format";
-import MovimientoEstatus from "./../Common/MovimientoEstatus";
-import Moment from 'react-moment';
 
-const TableList = ({ data, toggleTake }) => {
-  if (!data) return <div></div>;
+import Moment from 'react-moment';
+import MovimientoEstatus from './../../Common/MovimientoEstatus';
+import { MovimientoContext } from './../../Context/MovimientoContext';
+
+const TableHome = ({ toggleTake }) => {
+ 
+    const { movimientos } = useContext(MovimientoContext);
 
   return (
     <Table aria-label="simple table">
@@ -30,7 +33,7 @@ const TableList = ({ data, toggleTake }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((row) => (
+        {movimientos.map((row) => (
           <TableRow key={row._id}>
             <TableCell component="th" scope="row">
               {row._id}
@@ -77,4 +80,4 @@ const TableList = ({ data, toggleTake }) => {
   );
 };
 
-export default TableList;
+export default TableHome;

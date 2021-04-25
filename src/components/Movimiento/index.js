@@ -1,7 +1,13 @@
 import React from 'react';
+import MovimientoProvider from '../Context/MovimientoContext';
+import Home from './Home';
 
 const Movimiento = () => {
-    return ( <h2>moviento</h2> );
+    return ( 
+        <MovimientoProvider>
+            <Home/>
+        </MovimientoProvider>
+     );
 }
  
 export default Movimiento;
