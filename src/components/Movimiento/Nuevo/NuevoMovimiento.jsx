@@ -23,16 +23,16 @@ import moment from "moment";
 import CountUp from "react-countup";
 import { v4 as uuidv4 } from "uuid";
 import MovimientoForm from "./MovimientoForm";
-//import RetornosTab from "./../Retornos/RetornosTab";
-//import DepositosTab from "./../Depositos/DepositosTab";
-//import ModalForm from "./../Common/ModalForm";
-//import DepositoForm from "./../Depositos/DepositoForm";
-//import RetornoForm from "./../Retornos/RetornoForm";
-
-//import ComisionForm from "./ComisionForm";
-//import ComisionTab from "./ComisionTab";
 import TabPanel from "../../Common/TabPanel";
 import { MovimientoContext } from './../../Context/MovimientoContext';
+import DepositosTab from "../Common/Depositos/DepositosTab";
+import ModalForm from "../../Common/ModalForm";
+import DepositoForm from '../Common/Depositos/DepositoForm';
+import RetornoForm from './../Common/Retornos/RetornoForm';
+import ComisionForm from '../Common/Comisiones/ComisionForm';
+import AlertForm from './../../Common/AlertForm';
+import FacturaTable from '../Common/Facturas/FacturaTable';
+import RetornosTab from './../Common/Retornos/RetornosTab';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NuevoMovimiento = () => {
   const classes = useStyles();
-  const {setAgentesList, setClientesList} = useContext(MovimientoContext);
+  const {setAgentesList, setClientesList, depositos, setDepositos} = useContext(MovimientoContext);
   const [activeTab, setActiveTab] = useState(0);
   const [ModalState, setModalState] = useState(false);
   const [ModalStateFacturas, setModalStateFacturas] = useState(false);
@@ -160,8 +160,8 @@ const NuevoMovimiento = () => {
     setTotalDepositos(
       parseFloat(totalDepositos) + parseFloat(deposito.depositoMonto)
     );
-
-    //dispatch(addDeposito(deposito));
+    
+    setDepositos([...depositos,deposito]);
     setDeposito({
       _id: uuidv4(),
       bancoDeposito: "",
@@ -244,6 +244,12 @@ const NuevoMovimiento = () => {
     switch (activeTab) {
       case 0:
         //dispatch(deleteDeposito(obj._id));
+        setDepositos(
+          [...depositos.filter(
+            depo => depo._id !== obj._id
+          )]
+        )
+
         setTotalDepositos(
           parseFloat(totalDepositos) - parseFloat(obj.depositoMonto)
         );
@@ -294,7 +300,7 @@ const NuevoMovimiento = () => {
       totalRetornos: totalRetornos,
       totalComisiones: totalComisiones,
     });
-    console.log("Total depositos:", totalDepositos);
+   
   }, [totalDepositos, totalRetornos, totalComisiones]);
 
   useEffect(() => {
@@ -302,7 +308,6 @@ const NuevoMovimiento = () => {
     const getAgentes = async () => {
       const response = await axios.get(process.env.REACT_APP_API + `/listado/agente`);
       setAgentesList(response.data);
-      console.log("getAgentes");
     }
     getAgentes()
   }, []);
@@ -321,7 +326,6 @@ const NuevoMovimiento = () => {
   const getClientes = async (agente) => {
     const response = await axios.post(process.env.REACT_APP_API + `/filtro/agente`, agente);
     setClientesList(response.data);
-    console.log("getClientes");
   }
 
   const OnClienteChange = (e) => {
@@ -494,16 +498,16 @@ const NuevoMovimiento = () => {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <TabPanel value={activeTab} index={0}>
-                  <h1>Deposito tab</h1>
-                {/*<DepositosTab
+                  
+                <DepositosTab
                   handleDeleteClick={(obj) => handleDeleteClick(obj)}
-                />*/}
+                />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
-              <h1>Retorno tab</h1>
-                {/*<RetornosTab
+              
+                <RetornosTab
                   handleDeleteClick={(obj) => handleDeleteClick(obj)}
-                />*/}
+                />
               </TabPanel>
               <TabPanel value={activeTab} index={2}>
               <h1>Comision tab</h1>
@@ -528,7 +532,7 @@ const NuevoMovimiento = () => {
                  (
                    <Fragment>
                     <h3>FACTURAS ASIGNADAS AL MOVIMIENTO </h3>
-                    {/*<FacturaTable />*/}
+                    <FacturaTable />
                     <Button size="small" color="primary" variant="contained" onClick={onQuitarSolicitud}>
                       QUITAR
                     </Button>
@@ -539,7 +543,7 @@ const NuevoMovimiento = () => {
             </Paper>
           </Grid>
         </Grid>
-       {/*<ModalForm
+       <ModalForm
           ModalState={ModalState}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleSaveAdd}
@@ -601,7 +605,7 @@ const NuevoMovimiento = () => {
       </CardActions>
       
         </ModalForm>
-*/}
+
       </Container>
     </Fragment>
      );

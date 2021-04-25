@@ -11,15 +11,8 @@ import { MovimientoContext } from './../../Context/MovimientoContext';
 
 const MovimientoForm = (props) => {
   const { onChange, movimiento, OnAgenteChange, OnClienteChange } = props;
-  const { cantidadTotal, agente, cliente, idAgente, idCliente } = movimiento;
-  //const agentesList = useSelector((state) => agentesSelector(state));
- // const clientesList = useSelector((state) => clientesSelector(state));
-    const { agentesList, clientesList } = useContext(MovimientoContext); 
-   
-    
-
-
-
+  const { cantidadTotal, agente, cliente } = movimiento;
+  const { agentesList, clientesList } = useContext(MovimientoContext);
   return (
     <Fragment>
       <Typography variant="h6" gutterBottom>
