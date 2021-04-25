@@ -1,24 +1,31 @@
-import axios from 'axios';
-import React, {createContext, useEffect, useState} from 'react';
 
+import React, {createContext,  useState} from 'react';
 //create context for app
 export const MovimientoContext =  createContext();
 
-
 const MovimientoProvider = ({children}) => {
     const [movimientos, setMovimientos] = useState([]);
-
-    useEffect(()=>{
-        const getMovimientos = async () => {
-            const response = await axios.post(process.env.REACT_APP_API + `/tickets`);
-            setMovimientos(response.data);
-        }
-        getMovimientos();
-    }, [])
+    const [agentesList, setAgentesList] = useState([]);
+    const [clientesList, setClientesList] = useState([]);
+    const [depositos, setDepositos] = useState([]);
+    const [retornos, setRetornos] = useState([]);
+    const [comisiones, setComisiones] = useState([]);
+    
     return ( 
         <MovimientoContext.Provider
             value = {{
                 movimientos,
+                setMovimientos,
+                agentesList,
+                setAgentesList,
+                clientesList,
+                setClientesList,
+                depositos,
+                setDepositos,
+                retornos,
+                setRetornos,
+                comisiones,
+                setComisiones
             }}
         >
             {children}

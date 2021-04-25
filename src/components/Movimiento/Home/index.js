@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 import { Button, Container, Grid, Paper, Drawer } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import TableContainer from "@material-ui/core/TableContainer";
 import CreateIcon from "@material-ui/icons/Create";
-
-
 import CustomTextBox from './../../Common/CustomTextBox';
 import TableHome from './TableHome';
+import { MovimientoContext } from "../../Context/MovimientoContext";
+
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -26,10 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
-    const classes = useStyles();
-    const history = useHistory();
-    
-
+  const classes = useStyles();
+  const history = useHistory();
+  const {setMovimientos} = useContext(MovimientoContext);
   const [drawerState, setdrawerState] = useState(false);
   const [alertState, setAlertState] = useState(false);
   const [data, setData] = useState([]);
@@ -58,13 +58,18 @@ const Home = () => {
     setFilterText(e.target.value);
   };
 
-  useEffect(() => {
-    //consultamos con la api la base de datos llamamos startGetTickets
-    
-  }, []);
+  useEffect(()=>{
+    const getMovimientos = async () => {
+      const response = await axios.post(process.env.REACT_APP_API + `/tickets`);
+      setMovimientos(response.data);
+      console.log("getMovimientos");
+    }
+    getMovimientos();
+  },[]);
+ 
 
     return ( 
-        <React.Fragment>
+    <React.Fragment>
     <Container>
         <Grid container spacing={2}>
           <Grid item xs={12}>
