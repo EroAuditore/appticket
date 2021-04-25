@@ -4,7 +4,7 @@ import Home from './Home';
 
 const Movimiento = () => {
     return ( 
-        <MovimientoProvider>
+        <MovimientoProvider>| 
             <Home/>
         </MovimientoProvider>
      );

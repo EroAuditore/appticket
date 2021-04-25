@@ -7,18 +7,18 @@ export const MovimientoContext =  createContext();
 
 const MovimientoProvider = ({children}) => {
     const [movimientos, setMovimientos] = useState([]);
-
-    useEffect(()=>{
-        const getMovimientos = async () => {
-            const response = await axios.post(process.env.REACT_APP_API + `/tickets`);
-            setMovimientos(response.data);
-        }
-        getMovimientos();
-    }, [])
+    const [agentesList, setAgentesList] = useState([]);
+    const [clientesList, setClientesList] = useState([]);
+    
     return ( 
         <MovimientoContext.Provider
             value = {{
                 movimientos,
+                setMovimientos,
+                agentesList,
+                setAgentesList,
+                clientesList,
+                setClientesList
             }}
         >
             {children}
