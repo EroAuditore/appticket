@@ -9,7 +9,6 @@ import {
   Paper,
   Tab,
   Tabs,
-
   Fab,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,6 +34,9 @@ import AlertForm from './../../Common/AlertForm';
 import FacturaTable from '../Common/Facturas/FacturaTable';
 import RetornosTab from './../Common/Retornos/RetornosTab';
 import ComisionTab from './../Common/Comisiones/ComisionTab';
+import MovimientoView from './MovimientoView';
+import MovimientoTable from './MovimientoTable';
+import CheckAtencion from './CheckAtencion';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -64,10 +66,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 const AtenderMovimiento = () => {
-    let { id } = useParams();
+    let { id :movimientoId } = useParams();
     const classes = useStyles();
-    const {setAgentesList, 
-          setClientesList, 
+    const {
           depositos, 
           setDepositos,
           retornos,
@@ -86,7 +87,7 @@ const AtenderMovimiento = () => {
     const [startCounter, setStartCounter] = useState(0);
     const [selectedTake, setSelectedTake] = useState({});
     const [alertState, setAlertState] = useState(false);
-    const [archivo, setArchivo] = useState([]);
+ 
   
     
     const [deposito, setDeposito] = useState({
@@ -234,13 +235,6 @@ const AtenderMovimiento = () => {
       });
     };
   
-    const handleOnChangeMovimientoForm = (e) => {
-      setMovimiento({
-        ...movimiento,
-        [e.target.name]: e.target.value,
-      });
-    };
-  
     const handleOnChangeComisionForm = (e) => {
       setComision({
         ...comision,
@@ -256,10 +250,7 @@ const AtenderMovimiento = () => {
       });
     };
   
-    const handleAddClick = () => {
-      setModalState(true);
-    };
-  
+    
     const handleDeleteClick = (obj) => {
       switch (activeTab) {
         case 0:
@@ -295,42 +286,7 @@ const AtenderMovimiento = () => {
       }
     };
   
-    const OnSaveMovimiento = () => {
-      //dispatch(startSaveMovimiento(movimiento));
-      const data = new FormData();
-      data.append('file', archivo[0]);
-  
-      const movimientoObj = {
-        movimiento,
-        depositos,
-        retornos,
-        comisiones,
-      };
-  
-      const json = JSON.stringify(movimientoObj);
-      data.append('movimientoObj', json);
-      try {
-        const saveMovimiento = async () => {
-          const response = await axios.post(process.env.REACT_APP_API + `/movimiento/nuevo`, 
-          data, 
-          {
-            Accept: 'application/json',
-            'content-type': 'multipart/form-data',
-          }).then((response) => {
-            history.push("/movimientos");
-            console.log("Saved");
-          }, (error) => {
-            console.log("error", error);
-          });
-          
-        }
-        saveMovimiento();
-  
-      }catch(e){
-        console.log("Error al guardar", e);
-      }
-    };
-  
+   
     const onCalculoPorcentaje = () => {
       let resultado = parseFloat(
         (parseFloat(movimiento.cantidadTotal) / 1.16) *
@@ -343,12 +299,7 @@ const AtenderMovimiento = () => {
       });
     };
   
-    const handleFileUpload = (file) => {
-      setArchivo({
-        archivo: file,
-      });
-    };
-  
+   
     useEffect(() => {
       calculartotal();
       setMovimiento({
@@ -361,43 +312,20 @@ const AtenderMovimiento = () => {
     }, [totalDepositos, totalRetornos, totalComisiones]);
   
     useEffect(() => {
-      //consultamos con la api la base de datos llamamos startGetTickets
-      const getAgentes = async () => {
-        const response = await axios.get(process.env.REACT_APP_API + `/listado/agente`);
-        setAgentesList(response.data);
+      //consultamos con la api la base de datos para traer toda la info del movimiento
+      const getData = async () => {
+        const response = await axios.post(process.env.REACT_APP_API + `/movimiento/atender`,{_id: movimientoId});
+        
+        console.log("data mov:", response.data.movimiento)
+        setMovimiento(
+            response.data.movimiento
+          );
       }
-      getAgentes()
+      getData();
     }, []);
   
-    const OnAgenteChange = (e) => {
-      setMovimiento({
-        ...movimiento,
-        [e.target.name]: e.target.value,
-        idAgente: e.target.value,
-      });
-      const agente = {
-        _id: e.target.value,
-      };
-      getClientes(agente);
-    };
-    const getClientes = async (agente) => {
-      const response = await axios.post(process.env.REACT_APP_API + `/filtro/agente`, agente);
-      setClientesList(response.data);
-    }
   
-    const OnClienteChange = (e) => {
-      setMovimiento({
-        ...movimiento,
-        [e.target.name]: e.target.value,
-        idCliente: e.target.value,
-      });
-  
-      const cliente = {
-        _id: e.target.value,
-      };
-  
-      //dispatch(startSolicitud(cliente));
-    };
+   
   
     const handleTake = () => {
       setMovimiento({
@@ -411,47 +339,51 @@ const AtenderMovimiento = () => {
     const toggleTake = () => {
       setAlertState(!alertState);
     };
-  
-    const handleFacturas =(solicitud)=>{
-      setModalStateFacturas(true);
-      //dispatch(startFSC(solicitud));
-      setSelectedTake(solicitud);
-  
-     
-    }
-    const onQuitarSolicitud = () =>{
-      setMovimiento({
-        ...movimiento,
-        solicitudId: null
-      }) 
-    }
-    let  { solicitudId } = movimiento; 
+    const handleValidate = () => {
+        //dispatch(startVM(movimiento));
+    };
+    const handleChecked = (event) => {
+        setMovimiento({ ...movimiento, [event.target.id]: event.target.checked });
+    };
+    function mapToDepositos(depositos) {
+        const repl = depositos.map(obj => ({
+          _id: obj._id,
+          bancoDeposito: obj.banco,
+          depositoMonto: obj.monto,
+          comentarioDeposito: obj.comentarios,
+          fechaDeposito: obj.fecha,
+          fechaDepositoStr: obj.fecha,
+          ...obj,
+        }));
+        return repl;
+      }
+      
+      function mapToRetornos(retornos) {
+        const repl = retornos.map(obj => ({
+          _id: obj._id,
+          nombreRetorno: obj.Nombre,
+          entidadRetorno: obj.Banco,
+          retornoMonto: obj.Monto,
+          comentarioRetorno: obj.Comentario,
+          cuentaRetorno: obj.Cuenta_clabe,
+          ...obj,
+        }));
+        return repl;
+      }
+    
+    
   
       return ( 
       <Fragment>
         <Container>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<SaveAltIcon />}
-                onClick={OnSaveMovimiento}
-              >
-                Guardar
-              </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <Paper className={classes.paper}>
-                <MovimientoForm
-                  onChange={handleOnChangeMovimientoForm}
-                  OnAgenteChange={OnAgenteChange}
-                  OnClienteChange={OnClienteChange}
-                  movimiento={movimiento}
-                /> 
-              </Paper>
-            </Grid>
+          <Grid item xs={4}>
+            <Paper className={classes.paper}>
+            
+              <MovimientoView movimiento={movimiento} />
+            </Paper>
+          </Grid>
+           
             <Grid item xs={8}>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -532,73 +464,58 @@ const AtenderMovimiento = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={11}>
-              <Tabs
-                indicatorColor="primary"
-                textColor="primary"
-                aria-label="Movimientos tab"
-                value={activeTab}
-                onChange={handleChange}
-              >
-                <Tab label="Depositos" />
-                <Tab label="Retornos" />
-                <Tab label="Comisiones" />
-                <Tab label="Adjunto" />
-                <Tab label="Facturas" />
-              </Tabs>
-            </Grid>
-            <Grid item xs={1}>
-              <Fab color="primary" aria-label="add" onClick={handleAddClick}>
-                <AddIcon />
-              </Fab>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <TabPanel value={activeTab} index={0}>
-                    
-                  <DepositosTab
-                    handleDeleteClick={(obj) => handleDeleteClick(obj)}
-                  />
-                </TabPanel>
-                <TabPanel value={activeTab} index={1}>
-                
-                  <RetornosTab
-                    handleDeleteClick={(obj) => handleDeleteClick(obj)}
-                  />
-                </TabPanel>
-                <TabPanel value={activeTab} index={2}>
-                  <ComisionTab
-                    handleDeleteClick={(obj) => handleDeleteClick(obj)}
-                  />
-                  </TabPanel>
-                <TabPanel value={activeTab} index={3}>
-                <h1>File upload tab</h1>
-                  {/*<DropZone onChange={(file) => handleFileUpload(file)} /> */}
-                </TabPanel>
-  
-                <TabPanel value={activeTab} index={4}>
-                  {
-                   solicitudId ===null ? (
-                    <Fragment>
-                      <h3>SOLICITUD DE FACTURAS PENDIENTES DE ASIGNAR </h3>
-                      {/*<SolicitudFactura
-                      handleFacturas={(obj)=> handleFacturas(obj)}
-                      />*/}
-                    </Fragment>): 
-                   (
-                     <Fragment>
-                      <h3>FACTURAS ASIGNADAS AL MOVIMIENTO </h3>
-                      <FacturaTable />
-                      <Button size="small" color="primary" variant="contained" onClick={onQuitarSolicitud}>
-                        QUITAR
-                      </Button>
-                    </Fragment>
-                   )
-                   }
-                </TabPanel>
-              </Paper>
-            </Grid>
+           <Grid item xs={11}>
+            <Tabs
+              indicatorColor="primary"
+              textColor="primary"
+              aria-label="Movimientos tab"
+              value={activeTab}
+              onChange={handleChange}
+            >
+              <Tab label="Movimiento" />
+              <Tab label="Depositos" />
+              <Tab label="Retornos" />
+              <Tab label="Comisiones" />
+              <Tab label="Adjunto" />
+            </Tabs>
           </Grid>
+
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <TabPanel value={activeTab} index={0}>
+                <MovimientoTable />
+              </TabPanel>
+              <TabPanel value={activeTab} index={1}>
+                <DepositosTab
+                  handleDeleteClick={(obj) => handleDeleteClick(obj)}
+                />
+              </TabPanel>
+              <TabPanel value={activeTab} index={2}>
+                <RetornosTab
+                  handleDeleteClick={(obj) => handleDeleteClick(obj)}
+                />
+              </TabPanel>
+              <TabPanel value={activeTab} index={3}>
+                <ComisionTab
+                  handleDeleteClick={(obj) => handleDeleteClick(obj)}
+                />
+              </TabPanel>
+              <TabPanel value={activeTab} index={4}>
+                {/*<FilesMovimiento
+                  handleDownloadClick={(item) => handleDownloadClick(item)}
+                /> */}
+              </TabPanel>
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <CheckAtencion
+              onValidate={handleValidate}
+              data={movimiento}
+              handleChecked={handleChecked}
+            />
+          </Grid>
+       
+            </Grid>
          <ModalForm
             ModalState={ModalState}
             handleCloseAdd={handleCloseAdd}
