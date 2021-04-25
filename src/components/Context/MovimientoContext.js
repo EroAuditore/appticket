@@ -1,9 +1,7 @@
-import axios from 'axios';
-import React, {createContext, useEffect, useState} from 'react';
 
+import React, {createContext,  useState} from 'react';
 //create context for app
 export const MovimientoContext =  createContext();
-
 
 const MovimientoProvider = ({children}) => {
     const [movimientos, setMovimientos] = useState([]);

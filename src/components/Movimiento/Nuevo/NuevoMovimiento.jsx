@@ -33,6 +33,7 @@ import ComisionForm from '../Common/Comisiones/ComisionForm';
 import AlertForm from './../../Common/AlertForm';
 import FacturaTable from '../Common/Facturas/FacturaTable';
 import RetornosTab from './../Common/Retornos/RetornosTab';
+import ComisionTab from './../Common/Comisiones/ComisionTab';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -67,7 +68,9 @@ const NuevoMovimiento = () => {
         depositos, 
         setDepositos,
         retornos,
-        setRetornos 
+        setRetornos,
+        comisiones,
+        setComisiones 
       } = useContext(MovimientoContext);
   
   const [activeTab, setActiveTab] = useState(0);
@@ -108,7 +111,7 @@ const NuevoMovimiento = () => {
 
   const [comision, setComision] = useState({
     _id: uuidv4(),
-    Tipo: "",
+    Tipo: "Comision Agente",
     Monto: 0,
     Comentarios: "",
     Porcentaje: 0,
@@ -204,11 +207,11 @@ const NuevoMovimiento = () => {
     setTotalComisiones(
       parseFloat(totalComisiones) + parseFloat(comision.Monto)
     );
-    //dispatch(addComision(comision));
+    setComisiones([...comisiones, comision]);
     setComision({
       _id: uuidv4(),
       Monto: 0,
-      Tipo: "",
+      Tipo: "Comision Agente",
       Comentarios: "",
       porcentaje: 0,
     });
@@ -276,7 +279,11 @@ const NuevoMovimiento = () => {
         );
         break;
       case 2:
-        //dispatch(deleteComision(obj.target_id));
+        setComisiones(
+          [...comisiones.filter(
+            com => com._id !== obj._id
+          )]
+        )
         setTotalComisiones(parseFloat(totalComisiones) - parseFloat(obj.Monto));
         break;
       default:
@@ -525,10 +532,9 @@ const NuevoMovimiento = () => {
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={2}>
-              <h1>Comision tab</h1>
-                {/*<ComisionTab
+                <ComisionTab
                   handleDeleteClick={(obj) => handleDeleteClick(obj)}
-                />*/}
+                />
                 </TabPanel>
               <TabPanel value={activeTab} index={3}>
               <h1>File upload tab</h1>
