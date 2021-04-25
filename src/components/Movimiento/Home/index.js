@@ -51,7 +51,7 @@ const Home = () => {
   };
 
   const toggleTake = (row) => {
-   
+    history.push(`/movimientos/atender/${row._id}`)
   };
 
   const handleFiltertextChange = (e) => {
@@ -62,7 +62,6 @@ const Home = () => {
     const getMovimientos = async () => {
       const response = await axios.post(process.env.REACT_APP_API + `/tickets`);
       setMovimientos(response.data);
-      console.log("getMovimientos");
     }
     getMovimientos();
   },[]);
