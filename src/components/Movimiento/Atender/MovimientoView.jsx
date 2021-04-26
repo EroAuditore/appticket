@@ -17,10 +17,7 @@ const MovimientoView = ({movimiento}) => {
     estatusRetorno,
     estatusComision,
   } = movimiento;
-
-  console.log("render estatus dep", estatusDeposito)
   
-
   return (
     <Table aria-label="simple table">
       <TableBody>

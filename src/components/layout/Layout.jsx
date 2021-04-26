@@ -95,7 +95,6 @@ const Layout = ( {children}) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const [user, setUser] = useState(null);
   
@@ -177,7 +176,7 @@ const Layout = ( {children}) => {
               selected={selectedIndex === 3}
               onClick={(event) => handleListItemClick(event, 3)}
               component={Link}
-              to="/facturas/solicitud"
+              to="/solicitudes"
             >
               <ListItemIcon>
                 <SettingsBackupRestoreIcon />

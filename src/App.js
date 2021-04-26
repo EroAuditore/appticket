@@ -10,14 +10,15 @@ import Movimiento from './components/Movimiento';
 import Login from './components/Login/Login';
 import Nuevo from './components/Movimiento/Nuevo/index';
 import Atender from './components/Movimiento/Atender/index';
+import Solicitud from './components/Solicitud';
 
 function App() {
   return (
     
     <Router>
-      
         <Layout>
           <Switch>
+              <Route path="/solicitudes" component={Solicitud} />
               <Route path="/movimientos/nuevo" component={Nuevo} />  
               <Route path="/movimientos/atender/:id" component={Atender} />  
               <Route path="/movimientos" component={Movimiento} />
