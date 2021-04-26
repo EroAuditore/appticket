@@ -9,11 +9,10 @@ import {
   Paper,
   Tab,
   Tabs,
-  Fab,
+
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
-import AddIcon from "@material-ui/icons/Add";
+
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -22,7 +21,6 @@ import Divider from "@material-ui/core/Divider";
 import moment from "moment";
 import CountUp from "react-countup";
 import { v4 as uuidv4 } from "uuid";
-import MovimientoForm from "./MovimientoForm";
 import TabPanel from "../../Common/TabPanel";
 import { MovimientoContext } from './../../Context/MovimientoContext';
 import DepositosTab from "../Common/Depositos/DepositosTab";
@@ -138,6 +136,9 @@ const AtenderMovimiento = () => {
       solicitudId: null,
       idAgente: 0,
       idCliente: 0,
+      retornos: false,
+      comisiones: false,
+      depositos: false,
       
     });
   
@@ -299,27 +300,24 @@ const AtenderMovimiento = () => {
       });
     };
   
-   
-    useEffect(() => {
-      calculartotal();
-      setMovimiento({
-        ...movimiento,
-        totalDepositos: totalDepositos,
-        totalRetornos: totalRetornos,
-        totalComisiones: totalComisiones,
-      });
-     
-    }, [totalDepositos, totalRetornos, totalComisiones]);
-  
     useEffect(() => {
       //consultamos con la api la base de datos para traer toda la info del movimiento
       const getData = async () => {
         const response = await axios.post(process.env.REACT_APP_API + `/movimiento/atender`,{_id: movimientoId});
-        
-        console.log("data mov:", response.data.movimiento)
-        setMovimiento(
-            response.data.movimiento
-          );
+        setMovimiento( {
+            ...movimiento,
+            ...response.data.movimiento,
+            retornos: response.data.movimiento.estatusRetorno == "generado" ? true : false,
+            comisiones: response.data.movimiento.estatusComision == "generado" ? true : false,
+            depositos: response.data.movimiento.estatusDeposito == "generado" ? true : false,
+        });
+        setDepositos( mapToDepositos(response.data.depositos));
+        setRetornos(mapToRetornos(response.data.retornos));
+        setComisiones(response.data.comisiones);
+        setTotalDepositos(parseFloat(response.data.movimiento.totalDepositos));
+        setTotalRetornos(parseFloat(response.data.movimiento.totalRetornos));
+        setTotalComisiones(parseFloat(response.data.movimiento.totalComisiones));
+        calculartotal();
       }
       getData();
     }, []);

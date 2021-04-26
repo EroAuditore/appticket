@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -9,7 +9,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import CardHeader from "@material-ui/core/CardHeader";
 
+
 const CheckAtencion = ({ data, handleChecked, onValidate }) => {
+ 
   const { comisiones, retornos, depositos } = data;
 
   return (

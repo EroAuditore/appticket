@@ -18,8 +18,8 @@ const MovimientoView = ({movimiento}) => {
     estatusComision,
   } = movimiento;
 
-  console.log("agente", Agente)
-  console.log("movimiento", movimiento)
+  console.log("render")
+  
 
   return (
     <Table aria-label="simple table">
