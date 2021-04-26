@@ -18,7 +18,7 @@ const MovimientoView = ({movimiento}) => {
     estatusComision,
   } = movimiento;
 
-  console.log("render")
+  console.log("render estatus dep", estatusDeposito)
   
 
   return (

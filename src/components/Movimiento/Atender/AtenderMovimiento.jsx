@@ -339,9 +339,22 @@ const AtenderMovimiento = () => {
     };
     const handleValidate = () => {
         //dispatch(startVM(movimiento));
+        axios.post(process.env.REACT_APP_API + '/movimiento/validar', movimiento).then( (response) => {
+            console.log("success", response);
+            setMovimiento({ ...movimiento, 
+                estatusDeposito: movimiento.depositos ? 'generado' : 'pendiente',
+                estatusRetorno: movimiento.retornos ? 'generado' : 'pendiente',
+                estatusComision: movimiento.comisiones ? 'generado' : 'pendiente',
+            });
+        }, (error) => {
+            console.log("error", error);
+        })
     };
     const handleChecked = (event) => {
-        setMovimiento({ ...movimiento, [event.target.id]: event.target.checked });
+        setMovimiento({ ...movimiento, 
+            [event.target.id]: event.target.checked, 
+        });
+       
     };
     function mapToDepositos(depositos) {
         const repl = depositos.map(obj => ({
