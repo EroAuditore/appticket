@@ -1,7 +1,7 @@
 import React from 'react';
 import NuevaSolicitud from './NuevaSolicitud';
 
-import SolicitudProvider from '../../Context/SolcitudContext';
+import SolicitudProvider from '../../Context/SolicitudContext';
 
 
 export const Nuevo = () => {

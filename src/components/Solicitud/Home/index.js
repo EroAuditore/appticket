@@ -8,7 +8,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import CreateIcon from "@material-ui/icons/Create";
 import CustomTextBox from './../../Common/CustomTextBox';
 import TableHome from './TableHome';
-import { SolicitudContext } from './../../Context/SolcitudContext';
+import { SolicitudContext } from '../../Context/SolicitudContext';
 
 
 const useStyles = makeStyles((theme) => ({

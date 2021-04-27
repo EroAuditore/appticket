@@ -12,7 +12,7 @@ import NumberFormat from "react-number-format";
 import Moment from 'react-moment';
 
 
-import { SolicitudContext } from './../../Context/SolcitudContext';
+import { SolicitudContext } from '../../Context/SolicitudContext';
 
 const renderCell = (item) => {
     let renderText = "";

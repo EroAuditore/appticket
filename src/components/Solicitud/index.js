@@ -1,5 +1,5 @@
 import React from 'react';
-import SolicitudProvider from '../Context/SolcitudContext';
+import SolicitudProvider from '../Context/SolicitudContext';
 import Home from './Home';
 
 const Solicitud = () => {
