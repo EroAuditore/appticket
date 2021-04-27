@@ -73,7 +73,7 @@ const Home = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <div className={classes.paperTitle}>
-              <h2>Movimientos</h2>
+              <h2>Solicitudes de Facturación</h2>
             </div>
           </Grid>
           <Grid item xs>

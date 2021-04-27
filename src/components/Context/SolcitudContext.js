@@ -5,12 +5,18 @@ export const SolicitudContext =  createContext();
 
 const SolicitudProvider  =({children}) =>{
     const [solicitudes, setSolicitudes] = useState([]);
+    const [agentesList, setAgentesList] = useState([]);
+    const [clientesList, setClientesList] = useState([]);
 
     return (
         <SolicitudContext.Provider
             value={{
                 solicitudes,
-                setSolicitudes
+                setSolicitudes,
+                agentesList,
+                setAgentesList,
+                clientesList,
+                setClientesList,
             }}
         >
             {children}

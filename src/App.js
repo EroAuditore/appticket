@@ -11,6 +11,7 @@ import Login from './components/Login/Login';
 import Nuevo from './components/Movimiento/Nuevo/index';
 import Atender from './components/Movimiento/Atender/index';
 import Solicitud from './components/Solicitud';
+import { Nuevo as NSolicicitud }   from './components/Solicitud/Nuevo/index';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
     <Router>
         <Layout>
           <Switch>
+              <Route path="/solicitudes/nuevo" component={NSolicicitud} />  
               <Route path="/solicitudes" component={Solicitud} />
               <Route path="/movimientos/nuevo" component={Nuevo} />  
               <Route path="/movimientos/atender/:id" component={Atender} />  
