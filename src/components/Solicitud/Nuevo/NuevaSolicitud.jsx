@@ -20,6 +20,8 @@ import TabPanel from "./../../Common/TabPanel";
 import Form from "./Form";
 import DialogBox from './DialogBox';
 import { SolicitudContext } from './../../Context/SolicitudContext';
+import FacturaCForm from "../Common/FacturaCForm";
+import FacturaTable from './FacturaTable';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -58,6 +60,8 @@ const NuevaSolicitud = () => {
 
   const {setAgentesList, 
     setClientesList, 
+    setFacturas,
+    facturas
   } = useContext(SolicitudContext);
 
   const [factura, setFactura] = useState({
@@ -142,6 +146,7 @@ const NuevaSolicitud = () => {
     );
     setFactura({ ...factura, _id: uuidv4() });
     //dispatch(addFactura(factura));
+    setFacturas([...facturas, factura])
     setDialogState(false);
   };
 
@@ -157,8 +162,10 @@ const NuevaSolicitud = () => {
     setTotalSolicitud(
       parseFloat(totalSolicitud) - parseFloat(facturaEdit.montoTotal)
     );
-
-    //dispatch(deleteFactura(facturaEdit._id));
+    setFacturas ( [
+        ...facturas.filter(factura => factura._id !== facturaEdit._id)
+      ])
+    
   };
 
   const onSaveSol = () => {
@@ -205,8 +212,20 @@ const NuevaSolicitud = () => {
     const cliente = {
       _id: e.target.value,
     };
-
     //dispatch(startCliente(cliente));
+    const getCliente = async (cliente) => {
+        const response = await axios.post(process.env.REACT_APP_API + `/cliente/filtrar`, cliente);
+        
+        setFactura({
+            ...factura,
+            RFC: response.data[0].RFC,
+            Cliente: response.data[0].razonSocial,
+            email: response.data[0].email,
+            direccionCliente: response.data[0].direccion,
+          });
+      }
+    getCliente(cliente);    
+  
   };
 
   const handleCloseAdd = () => {
@@ -335,10 +354,10 @@ const NuevaSolicitud = () => {
             <Paper className={classes.paper}>
               <TabPanel value={activeTab} index={0}>
                   <h1>Factura table</h1>
-                {/*<FacturaTable
+                <FacturaTable
                   onDelete={(facturaEdit) => handleDeleteClick(facturaEdit)}
                   handleAddClick={(row) => handleAddPartida(row)}
-                />*/}
+                />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
                 {/*<DropZone onChange={(file) => handleFileUpload(file)  } deleteFile={()=>handledeleteFile()} /> */}
@@ -359,12 +378,12 @@ const NuevaSolicitud = () => {
           ButtonText ={"Guardar"}
         >
           <Paper className={classes.paperModal}>
-            {/*<FacturaCForm
+            <FacturaCForm
               data={factura}
               handleOnChange={handleOnChangeFacturaForm}
               handleChecked={handleChecked}
               onCalculoTotal={onCalculoTotal}
-            />*/}
+            />
           </Paper>
         </ModalForm>
         <ModalForm

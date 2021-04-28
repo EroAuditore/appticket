@@ -7,6 +7,7 @@ const SolicitudProvider  =({children}) =>{
     const [solicitudes, setSolicitudes] = useState([]);
     const [agentesList, setAgentesList] = useState([]);
     const [clientesList, setClientesList] = useState([]);
+    const [facturas, setFacturas] = useState([]);
 
     return (
         <SolicitudContext.Provider
@@ -17,6 +18,8 @@ const SolicitudProvider  =({children}) =>{
                 setAgentesList,
                 clientesList,
                 setClientesList,
+                facturas,
+                setFacturas,
             }}
         >
             {children}
