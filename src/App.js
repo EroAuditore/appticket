@@ -12,6 +12,7 @@ import Nuevo from './components/Movimiento/Nuevo/index';
 import Atender from './components/Movimiento/Atender/index';
 import Solicitud from './components/Solicitud';
 import { Nuevo as NSolicicitud }   from './components/Solicitud/Nuevo/index';
+import Settings from './components/Settings/index';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/movimientos/nuevo" component={Nuevo} />  
               <Route path="/movimientos/atender/:id" component={Atender} />  
               <Route path="/movimientos" component={Movimiento} />
+              <Route path="/settings" component={Settings} />
               <Route path="/" exact component={Login} />
           </Switch>
         </Layout>

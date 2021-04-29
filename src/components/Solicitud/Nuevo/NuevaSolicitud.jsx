@@ -57,7 +57,7 @@ const NuevaSolicitud = () => {
   const [startCounter, setStartCounter] = useState(0);
   const [ModalState, setModalState] = useState(false);
   const [archivo, setArchivo] = useState([]);
-
+  const history = useHistory();
   const {setAgentesList, 
     setClientesList, 
     setFacturas,
@@ -170,6 +170,37 @@ const NuevaSolicitud = () => {
 
   const onSaveSol = () => {
     //dispatch(startSaveFacturas(solicitud));
+
+    const data = new FormData();
+    data.append('file', archivo[0]);
+
+    const solicitudObj = {
+        solicitud,
+        facturas,
+      };
+    const json = JSON.stringify(solicitudObj);
+
+    data.append('solicitudObj', json);
+
+    try {
+      const saveSolicitud = async () => {
+        const response = await axios.post(process.env.REACT_APP_API + `/solicitud/guardar`, 
+        data, 
+        {
+          Accept: 'application/json',
+          'content-type': 'multipart/form-data',
+        }).then((response) => {
+          history.push("/solicitudes");
+          
+        }, (error) => {
+          console.log("error", error);
+        });
+        
+      }
+      saveSolicitud();
+    }catch(e){
+        console.log("Error al guardar", e);
+    }
     
   };
 
