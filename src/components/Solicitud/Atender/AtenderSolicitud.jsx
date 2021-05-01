@@ -54,6 +54,7 @@ const AtenderSolicitud = () => {
   const [openFile, setOpenFile] = React.useState(false);
   const [openPDF, setOpenPDF] = React.useState(false);
   const [factura, setFactura] = useState({});
+  const [facturas, setFacturas] = useState([]);
   const [xml, setXml] = useState([]);
   const [pdf, setPdf] = useState([]);
   let { id :solicitudId } = useParams();
@@ -154,12 +155,14 @@ const AtenderSolicitud = () => {
       const response = await axios.post(
         process.env.REACT_APP_API + `/movimiento/facturas/tomar`,
         {_id: solicitudId});
-        const { solicitud : sol } =  response.data;
+        const { solicitud : sol, facturas: facts } =  response.data;
       setSolicitud({
         ...solicitud,
         ...sol
-      })
-      console.log(response.data.solicitud);
+      });
+      setFacturas([...facts]);
+
+      
     }
     getData();
     //setTotalSolicitud(Total_Solicitud);
@@ -239,6 +242,7 @@ const AtenderSolicitud = () => {
                 onDelete={(facturaEdit) => handleDeleteClick(facturaEdit)}
                 OnUploadXML={(row) => OnUploadXML(row)}
                 OnUploadPDF={(row) => OnUploadPDF(row)}
+                facturas={facturas}
               />
             </Paper>
           </Grid>

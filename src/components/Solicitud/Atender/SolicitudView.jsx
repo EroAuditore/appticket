@@ -10,8 +10,6 @@ import Typography from "@material-ui/core/Typography";
 const SolicitudView = ({solicitud}) => {
   //const { Agente, Cliente } = useSelector((state) => state.facturas.solicitud);
  const {Agente, Cliente} =solicitud;
-
- console.log("Solicitud", solicitud);
   return (
     <Table aria-label="simple table">
       <TableBody>

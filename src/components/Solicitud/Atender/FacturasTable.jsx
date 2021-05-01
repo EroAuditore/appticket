@@ -5,7 +5,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-
 import NumberFormat from "react-number-format";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import FacturaEstatus from "./../../Common/FacturaEstatus";
@@ -20,10 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FacturasTable = ({ OnUploadXML, OnUploadPDF }) => {
+const FacturasTable = ({ OnUploadXML, OnUploadPDF, facturas : data }) => {
   const classes = useStyles();
-  //const data = useSelector((state) => attFacturasSelector(state));
-  const data = []
+ 
   return (
     <Table className={classes.table} aria-label="simple table">
       <TableHead>
