@@ -13,6 +13,7 @@ import Atender from './components/Movimiento/Atender/index';
 import Solicitud from './components/Solicitud';
 import { Nuevo as NSolicicitud }   from './components/Solicitud/Nuevo/index';
 import Settings from './components/Settings/index';
+import { Atender as AtenderSol } from './components/Solicitud/Atender/index';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
     <Router>
         <Layout>
           <Switch>
+            <Route path="/solicitudes/atender/:id" component={AtenderSol} />  
               <Route path="/solicitudes/nuevo" component={NSolicicitud} />  
               <Route path="/solicitudes" component={Solicitud} />
               <Route path="/movimientos/nuevo" component={Nuevo} />  
