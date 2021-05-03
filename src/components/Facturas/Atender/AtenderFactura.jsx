@@ -52,6 +52,7 @@ const AtenderFactura = () => {
   const [xml, setXml] = useState([]);
   const [pdf, setPdf] = useState([]);
   const [factura, setFactura] = useState({});
+  const [xmlUploaded, setXmlUploaded] = useState({});
   const [movimiento, setMovimiento] = useState({});
   const [openFile, setOpenFile] = useState(false);
   const [openPDF, setOpenPDF] = useState(false);
@@ -86,6 +87,9 @@ const AtenderFactura = () => {
           'content-type': 'multipart/form-data',
         }).then((response) => {
          console.log("uploaded", response);
+         setXmlUploaded({
+          ...response.data
+         })
         }, (error) => {
           console.log("error", error);
         });
@@ -117,8 +121,31 @@ const AtenderFactura = () => {
 
   const doUploadXML = () => {
     //subimos el XML a la nube
-    //if (xml.length > 0)
-     // dispatch(startUploadXML({ ...factura, Archivo: xml }));
+    if (xml.length > 0)
+    {
+      const data = new FormData();
+      data.append('file', xml[0]);
+      const json = JSON.stringify(factura);
+      data.append('solicitudObj', json);
+      const uploadXml = async () => {
+        const response = await axios.post(process.env.REACT_APP_API + `/factura/xml`, 
+        data, 
+        {
+          Accept: 'application/json',
+          'content-type': 'multipart/form-data',
+        }).then((response) => {
+         console.log("saved xml", response);
+         setFactura({
+          ...response.data[0]
+        })
+        
+        }, (error) => {
+          console.log("error", error);
+        });
+      }
+        uploadXml();
+    }
+     
   };
 
   const saveXML = () => {
@@ -195,7 +222,7 @@ const AtenderFactura = () => {
                 <Card>
                   <CardHeader title="Datos XML" />
                   <CardContent>
-                    <FacturaTempView />
+                    <FacturaTempView data={xmlUploaded} />
                   </CardContent>
                   <CardActions>
                     <Button

@@ -8,8 +8,8 @@ import Typography from "@material-ui/core/Typography";
 
 import FacturaEstatus from "./../../Common/FacturaEstatus";
 
-const FacturaTempView = () => {
-  const data = [];
+const FacturaTempView = ({data}) => {
+  
   const {
     RFC,
     cliente,
