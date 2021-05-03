@@ -18,6 +18,7 @@
     "dotenv": "^8.2.0",
     "joi-browser": "^13.4.0",
     "jwt-decode": "^3.1.2",
+    "material-ui-dropzone": "^3.5.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-countup": "^4.3.3",
@@ -26,7 +27,8 @@
     "react-number-format": "^4.5.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yarn": "^1.22.10"
   },
   "scripts": {
     "start": "react-scripts start",
