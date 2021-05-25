@@ -35,6 +35,7 @@ import ComisionTab from './../Common/Comisiones/ComisionTab';
 import MovimientoView from './MovimientoView';
 import MovimientoTable from './MovimientoTable';
 import CheckAtencion from './CheckAtencion';
+import TableFiles from './../../Archivos/TableFiles';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -85,6 +86,7 @@ const AtenderMovimiento = () => {
     const [startCounter, setStartCounter] = useState(0);
     const [selectedTake, setSelectedTake] = useState({});
     const [alertState, setAlertState] = useState(false);
+    const [files, setFiles] = useState([]);
  
   
     
@@ -319,7 +321,12 @@ const AtenderMovimiento = () => {
         setTotalComisiones(parseFloat(response.data.movimiento.totalComisiones));
         calculartotal();
       }
+      const getDataFiles = async () => {
+        const response = await axios.post(process.env.REACT_APP_API + `/files/movimiento`,{_id: movimientoId});
+        setFiles(response.data);
+      }
       getData();
+      getDataFiles();
     }, []);
   
   
@@ -381,7 +388,11 @@ const AtenderMovimiento = () => {
         }));
         return repl;
       }
-    
+      
+      const handleDownloadClick = (item) => {
+        
+        window.open(process.env.REACT_APP_FILESURL + item._id, "blank");
+      };
     
   
       return ( 
@@ -512,9 +523,10 @@ const AtenderMovimiento = () => {
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={4}>
-                {/*<FilesMovimiento
+              <TableFiles
                   handleDownloadClick={(item) => handleDownloadClick(item)}
-                /> */}
+                  data={files}
+                /> 
               </TabPanel>
             </Paper>
           </Grid>

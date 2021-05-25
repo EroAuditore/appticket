@@ -35,6 +35,7 @@ import AlertForm from './../../Common/AlertForm';
 import FacturaTable from '../Common/Facturas/FacturaTable';
 import RetornosTab from './../Common/Retornos/RetornosTab';
 import ComisionTab from './../Common/Comisiones/ComisionTab';
+import { DropzoneArea } from 'material-ui-dropzone';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -60,6 +61,10 @@ const useStyles = makeStyles((theme) => ({
     width: 450,
     padding: 25,
   },
+  previewChip: {
+    minWidth: 160,
+    maxWidth: 210
+  }
 }));
 
 const NuevoMovimiento = () => {
@@ -342,9 +347,7 @@ const NuevoMovimiento = () => {
   };
 
   const handleFileUpload = (file) => {
-    setArchivo({
-      archivo: file,
-    });
+    setArchivo(file);
   };
 
   useEffect(() => {
@@ -412,10 +415,7 @@ const NuevoMovimiento = () => {
 
   const handleFacturas =(solicitud)=>{
     setModalStateFacturas(true);
-    //dispatch(startFSC(solicitud));
     setSelectedTake(solicitud);
-
-   
   }
   const onQuitarSolicitud = () =>{
     setMovimiento({
@@ -570,8 +570,22 @@ const NuevoMovimiento = () => {
                 />
                 </TabPanel>
               <TabPanel value={activeTab} index={3}>
-              <h1>File upload tab</h1>
-                {/*<DropZone onChange={(file) => handleFileUpload(file)} /> */}
+              
+                
+                <DropzoneArea
+                    showPreviews={true}
+                    showPreviewsInDropzone={false}
+                    useChipsForPreview
+                    previewGridProps={{container: { spacing: 1, direction: 'row' }}}
+                    previewChipProps={{classes: { root: classes.previewChip } }}
+                    previewText="Archivo cargado"
+                    onChange={(file) => handleFileUpload(file)}
+                    maxFileSize={3000000}
+                    acceptedFiles={[".xml", ".pdf", ".xlsx", ".xls", ".doc",".docx",".xml", ".csv"]}
+                    filesLimit={1}
+                    initialFiles={archivo}
+                  /> 
+                
               </TabPanel>
 
               <TabPanel value={activeTab} index={4}>
