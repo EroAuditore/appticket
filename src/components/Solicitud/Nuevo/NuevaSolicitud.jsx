@@ -11,6 +11,7 @@ import {
   Tabs,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { DropzoneArea } from 'material-ui-dropzone';
 import CountUp from "react-countup";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -91,7 +92,7 @@ const NuevaSolicitud = () => {
     Comentarios: "",
     totalSolicitud: 0,
     userId: null,//getCurrentUserID(),
-    Archivo: [],
+    
   });
 
   const [partida, setPartida] = useState({
@@ -145,7 +146,6 @@ const NuevaSolicitud = () => {
       parseFloat(totalSolicitud) + parseFloat(factura.montoTotal)
     );
     setFactura({ ...factura, _id: uuidv4() });
-    //dispatch(addFactura(factura));
     setFacturas([...facturas, factura])
     setDialogState(false);
   };
@@ -169,8 +169,6 @@ const NuevaSolicitud = () => {
   };
 
   const onSaveSol = () => {
-    //dispatch(startSaveFacturas(solicitud));
-
     const data = new FormData();
     data.append('file', archivo[0]);
 
@@ -283,11 +281,12 @@ const NuevaSolicitud = () => {
 
   const handleFileUpload = (file) => {
     if (file.length == 0) return;
-    console.log('file:', file)
-    setSolicitud({
-      ...solicitud,
-      Archivo: file,
-    });
+    setArchivo(file);
+    // console.log('file:', file)
+    // setSolicitud({
+    //   ...solicitud,
+    //   Archivo: file,
+    // });
   };
   const handledeleteFile =() =>{
     console.log('delete:')
@@ -384,13 +383,25 @@ const NuevaSolicitud = () => {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <TabPanel value={activeTab} index={0}>
-                  <h1>Factura table</h1>
                 <FacturaTable
                   onDelete={(facturaEdit) => handleDeleteClick(facturaEdit)}
                   handleAddClick={(row) => handleAddPartida(row)}
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
+              <DropzoneArea
+                    showPreviews={true}
+                    showPreviewsInDropzone={false}
+                    useChipsForPreview
+                    previewGridProps={{container: { spacing: 1, direction: 'row' }}}
+                    previewChipProps={{classes: { root: classes.previewChip } }}
+                    previewText="Archivo cargado"
+                    onChange={(file) => handleFileUpload(file)}
+                    maxFileSize={3000000}
+                    acceptedFiles={[".xml", ".pdf", ".xlsx", ".xls", ".doc",".docx",".xml", ".csv"]}
+                    filesLimit={1}
+                    initialFiles={archivo}
+                  />
                 {/*<DropZone onChange={(file) => handleFileUpload(file)  } deleteFile={()=>handledeleteFile()} /> */}
               </TabPanel>
             </Paper>
