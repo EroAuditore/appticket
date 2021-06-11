@@ -17,6 +17,8 @@ import FacturasTable from "./FacturasTable";
 import { DropzoneDialog } from "material-ui-dropzone";
 import SolicitudView from "./SolicitudView";
 import FacturaCForm from './../Common/FacturaCForm';
+import TabPanel from './../../Common/TabPanel';
+import TableFiles from './../../Archivos/TableFiles';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +59,7 @@ const AtenderSolicitud = () => {
   const [facturas, setFacturas] = useState([]);
   const [xml, setXml] = useState([]);
   const [pdf, setPdf] = useState([]);
+  const [files, setFiles] = useState([]);
   let { id :solicitudId } = useParams();
   //const { Total_Solicitud } = useSelector((state) => state.facturas.solicitud);
 
@@ -113,6 +116,7 @@ const AtenderSolicitud = () => {
   };
 
   const handleDeleteClick = (facturaEdit) => {
+    
     setTotalSolicitud(
       parseFloat(totalSolicitud) - parseFloat(facturaEdit.montoTotal)
     );
@@ -161,12 +165,22 @@ const AtenderSolicitud = () => {
         ...sol
       });
       setFacturas([...facts]);
-
+      setTotalSolicitud(sol.Total_Solicitud);
       
     }
+    const getDataFiles = async () => {
+      const response = await axios.post(process.env.REACT_APP_API + `/files/solicitud`,{_id: solicitudId});
+      setFiles(response.data);
+    }
     getData();
-    //setTotalSolicitud(Total_Solicitud);
+    getDataFiles();
+    
   }, []);
+
+  const handleDownloadClick = (item) => {
+    window.open(process.env.REACT_APP_FILESURL + item._id, "blank");
+  };
+
 
   return (
     <React.Fragment>
@@ -231,20 +245,29 @@ const AtenderSolicitud = () => {
               onChange={handleChange}
             >
               <Tab label="Facturas a generar" />
-              <Tab label="Movimientos pendientes" />
               <Tab label="Archivo" />
+              <Tab label="Movimientos pendientes" />
             </Tabs>
           </Grid>
 
           <Grid item xs={12}>
             <Paper className={classes.paper}>
+            <TabPanel value={activeTab} index={0}> 
               <FacturasTable
                 onDelete={(facturaEdit) => handleDeleteClick(facturaEdit)}
                 OnUploadXML={(row) => OnUploadXML(row)}
                 OnUploadPDF={(row) => OnUploadPDF(row)}
                 facturas={facturas}
               />
+              </TabPanel>
+              <TabPanel value={activeTab} index={1}> 
+              <TableFiles
+                  handleDownloadClick={(item) => handleDownloadClick(item)}
+                  data={files}
+                /> 
+              </TabPanel>
             </Paper>
+          
           </Grid>
         </Grid>
         <DialogBox
