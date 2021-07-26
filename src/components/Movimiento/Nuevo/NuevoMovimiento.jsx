@@ -36,6 +36,7 @@ import FacturaTable from '../Common/Facturas/FacturaTable';
 import RetornosTab from './../Common/Retornos/RetornosTab';
 import ComisionTab from './../Common/Comisiones/ComisionTab';
 import { DropzoneArea } from 'material-ui-dropzone';
+import SolicitudTable from './../Common/Facturas/SolicitudTable';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -90,6 +91,7 @@ const NuevoMovimiento = () => {
   const [selectedTake, setSelectedTake] = useState({});
   const [alertState, setAlertState] = useState(false);
   const [archivo, setArchivo] = useState([]);
+  const [solicitudes, setSolicitudes] = useState([]);
 
   
   const [deposito, setDeposito] = useState({
@@ -177,6 +179,7 @@ const NuevoMovimiento = () => {
     setTotalDepositos(
       parseFloat(totalDepositos) + parseFloat(deposito.depositoMonto)
     );
+    
     
     setDepositos([...depositos,deposito]);
     setDeposito({
@@ -336,7 +339,7 @@ const NuevoMovimiento = () => {
 
   const onCalculoPorcentaje = () => {
     let resultado = parseFloat(
-      (parseFloat(movimiento.cantidadTotal) / 1.16) *
+      (parseFloat(totalDepositos) / 1.16) *
         (parseFloat(comision.Porcentaje) / 100)
     ).toFixed(2);
 
@@ -396,6 +399,12 @@ const NuevoMovimiento = () => {
     const cliente = {
       _id: e.target.value,
     };
+  //Solicitud de facturas pendientes de asignar
+  const getData = async () => {
+    const response = await axios.post(process.env.REACT_APP_API + `/facturas/pendientes/movimiento`, cliente);
+    setSolicitudes(response.data);
+  }
+  getData();
 
     //dispatch(startSolicitud(cliente));
   };
@@ -423,6 +432,14 @@ const NuevoMovimiento = () => {
       solicitudId: null
     }) 
   }
+  const asignarSolicitud =(solicitud)=>{
+    console.log("Solicitud Asignada", solicitud);
+    setMovimiento({
+      ...movimiento,
+      solicitudId: solicitud._id,
+    });
+  }
+
   let  { solicitudId } = movimiento; 
 
     return ( 
@@ -593,13 +610,14 @@ const NuevoMovimiento = () => {
                  solicitudId ===null ? (
                   <Fragment>
                     <h3>SOLICITUD DE FACTURAS PENDIENTES DE ASIGNAR </h3>
+                    <SolicitudTable solicitudes={solicitudes} onAsignar={(obj) => asignarSolicitud(obj)} />
                     {/*<SolicitudFactura
                     handleFacturas={(obj)=> handleFacturas(obj)}
                     />*/}
                   </Fragment>): 
                  (
                    <Fragment>
-                    <h3>FACTURAS ASIGNADAS AL MOVIMIENTO </h3>
+                    <h3>Solcitud Asignada al evento </h3>
                     <FacturaTable />
                     <Button size="small" color="primary" variant="contained" onClick={onQuitarSolicitud}>
                       QUITAR

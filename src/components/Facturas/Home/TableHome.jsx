@@ -7,6 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import Moment from 'react-moment';
 import FacturaEstatus from './../../Common/FacturaEstatus';
+import NumberFormat from 'react-number-format';
 
 const TableHome = ({ toggleTake,  data }) => {
  //const data = []
@@ -19,6 +20,7 @@ const TableHome = ({ toggleTake,  data }) => {
 
           <TableCell align="left">Agente</TableCell>
           <TableCell align="left">Cliente</TableCell>
+          <TableCell align="left">Monto total</TableCell>
           <TableCell align="left">RFC</TableCell>
           <TableCell align="left">Fecha</TableCell>
           <TableCell align="left">Usuario</TableCell>
@@ -35,6 +37,15 @@ const TableHome = ({ toggleTake,  data }) => {
             </TableCell>
             <TableCell align="left">{row.Agente}</TableCell>
             <TableCell align="left">{row.cliente}</TableCell>
+            <TableCell align="left">
+            <NumberFormat
+                value={row.montoTotal}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+              />
+              
+              </TableCell>
             <TableCell align="left">{row.RFC}</TableCell>
             <TableCell align="left">
               <Moment format="YYYY/MM/DD">

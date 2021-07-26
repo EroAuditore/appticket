@@ -59,7 +59,7 @@ const MovimientoForm = (props) => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <TextField
             id="cantidadTotal"
             name="cantidadTotal"
@@ -72,7 +72,7 @@ const MovimientoForm = (props) => {
             }}
             onChange={onChange}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Fragment>
   );

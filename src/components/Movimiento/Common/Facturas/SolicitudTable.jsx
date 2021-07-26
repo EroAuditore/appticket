@@ -4,15 +4,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import Button from "@material-ui/core/Button";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import IconButton from "@material-ui/core/IconButton";
 
 import NumberFormat from "react-number-format";
 import Moment from 'react-moment';
-
-
-import { SolicitudContext } from '../../Context/SolicitudContext';
+import Button  from '@material-ui/core/Button';
 
 const renderCell = (item) => {
     let renderText = "";
@@ -48,9 +43,9 @@ const renderCell = (item) => {
     );
   };
 
-const TableHome = ({ selectedTake }) => {
+const SolicitudTable = ({ onAsignar, solicitudes: data }) => {
  
-    const { solicitudes: data } = useContext(SolicitudContext);
+   
 
   return (
     <Table aria-label="simple table">
@@ -60,7 +55,7 @@ const TableHome = ({ selectedTake }) => {
           <TableCell align="left">Agente</TableCell>
           <TableCell align="left">Cliente</TableCell>
           <TableCell align="left">Monto</TableCell>
-          <TableCell align="left">Fecha</TableCell>         
+          <TableCell align="left">Fecha</TableCell>
           <TableCell align="left">Estatus</TableCell>
           <TableCell align="left"></TableCell>
         </TableRow>
@@ -87,19 +82,18 @@ const TableHome = ({ selectedTake }) => {
                 {row.fecha}
               </Moment>
             </TableCell>
-           
             <TableCell align="left">
               {renderCell(row.Estatus_Facturacion)}
             </TableCell>
             <TableCell align="left">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-                onClick={() => selectedTake(row)}
-              >
-                <ArrowForwardIcon />
-              </IconButton>
+            <Button size="small"
+                    variant="contained"
+                    color="primary" 
+                    onClick={() => onAsignar(row)}
+            >
+                Asignar
+            </Button>
+              
             </TableCell>
           </TableRow>
         ))}
@@ -108,4 +102,4 @@ const TableHome = ({ selectedTake }) => {
     );
 };
 
-export default TableHome;
+export default SolicitudTable;
