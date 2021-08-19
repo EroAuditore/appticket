@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router';
-import axios from "axios";
+import axios from 'axios';
 import {
   Typography,
   Container,
@@ -8,18 +8,19 @@ import {
   Paper,
   Tab,
   Tabs,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import CountUp from "react-countup";
-import DialogBox from "./DialogBox";
-import { v4 as uuidv4 } from "uuid";
-import FacturasTable from "./FacturasTable";
-import { DropzoneDialog } from "material-ui-dropzone";
-import SolicitudView from "./SolicitudView";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import CountUp from 'react-countup';
+import DialogBox from './DialogBox';
+import { v4 as uuidv4 } from 'uuid';
+import FacturasTable from './FacturasTable';
+import { DropzoneDialog } from 'material-ui-dropzone';
+import SolicitudView from './SolicitudView';
 import FacturaCForm from './../Common/FacturaCForm';
 import TabPanel from './../../Common/TabPanel';
 import TableFiles from './../../Archivos/TableFiles';
-
+import MovimientoTable from './MovimientoTable';
+import MovimientoView from './MovimientoView';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paperTitle: {
     padding: theme.spacing(1),
-    textAlign: "left",
+    textAlign: 'left',
     color: theme.palette.text.secondary,
   },
   paperModal: {
@@ -57,16 +58,17 @@ const AtenderSolicitud = () => {
   const [openPDF, setOpenPDF] = React.useState(false);
   const [factura, setFactura] = useState({});
   const [facturas, setFacturas] = useState([]);
+  const [movimientos, setMovimientos] = useState([]);
+  const [movimiento, setMovimiento] = useState({});
   const [xml, setXml] = useState([]);
   const [pdf, setPdf] = useState([]);
   const [files, setFiles] = useState([]);
-  let { id :solicitudId } = useParams();
-  //const { Total_Solicitud } = useSelector((state) => state.facturas.solicitud);
+  let { id: solicitudId } = useParams();
 
   const [solicitud, setSolicitud] = useState({
-    Agente: "",
-    Cliente: "",
-    Comentarios: "",
+    Agente: '',
+    Cliente: '',
+    Comentarios: '',
   });
 
   const handleOnChangeFacturaForm = (e) => {
@@ -86,10 +88,6 @@ const AtenderSolicitud = () => {
     setFactura({ ...factura, [event.target.id]: event.target.checked });
   };
 
-  const handleUpdate = () => {
-    console.log("Handleupdate Start Update Factura", factura);
-  };
-
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
   };
@@ -103,7 +101,6 @@ const AtenderSolicitud = () => {
       parseFloat(totalSolicitud) + parseFloat(factura.montoTotal)
     );
     setFactura({ ...factura, _id: uuidv4() });
-    //dispatch(addFactura(factura));
     setDialogState(false);
   };
 
@@ -116,7 +113,6 @@ const AtenderSolicitud = () => {
   };
 
   const handleDeleteClick = (facturaEdit) => {
-    
     setTotalSolicitud(
       parseFloat(totalSolicitud) - parseFloat(facturaEdit.montoTotal)
     );
@@ -128,7 +124,7 @@ const AtenderSolicitud = () => {
     console.log(totalSolicitud);
     setSolicitud({ ...solicitud, totalSolicitud: totalSolicitud });
     ///dispatch(startSaveFacturas(solicitud));
-    console.log("guardando la solicitud");
+    console.log('guardando la solicitud');
   };
 
   const OnUploadXML = (row) => {
@@ -152,35 +148,73 @@ const AtenderSolicitud = () => {
     /*console.log( ( &&xml));*/
     //if (pdf.length > 0) dispatch(startUploadPDF({ ...factura, Archivo: pdf }));
   }, [pdf]);
+  const getMovimientoView = async (idMovimiento) => {
+    const response = await axios.get(
+      process.env.REACT_APP_API + `/movimiento/id/${idMovimiento}`
+    );
+    setMovimiento(response.data[0]);
+  };
 
   useEffect(() => {
-   
+    const getMovPendientes = async (idCliente) => {
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/movimientos/pendientes/facturar`,
+        { idCliente }
+      );
+      setMovimientos(response.data);
+    };
+
     const getData = async () => {
       const response = await axios.post(
         process.env.REACT_APP_API + `/movimiento/facturas/tomar`,
-        {_id: solicitudId});
-        const { solicitud : sol, facturas: facts } =  response.data;
+        { _id: solicitudId }
+      );
+      const { solicitud: sol, facturas: facts } = response.data;
       setSolicitud({
         ...solicitud,
-        ...sol
+        ...sol,
       });
       setFacturas([...facts]);
-      setTotalSolicitud(sol.Total_Solicitud);
-      
-    }
+
+      setTotalSolicitud(parseInt(sol.Total_Solicitud));
+      if (sol.id_movimiento === null) {
+        getMovPendientes(sol.idCliente);
+      } else {
+        getMovimientoView(sol.id_movimiento);
+      }
+    };
     const getDataFiles = async () => {
-      const response = await axios.post(process.env.REACT_APP_API + `/files/solicitud`,{_id: solicitudId});
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/files/solicitud`,
+        { _id: solicitudId }
+      );
       setFiles(response.data);
-    }
+    };
     getData();
     getDataFiles();
-    
   }, []);
 
   const handleDownloadClick = (item) => {
-    window.open(process.env.REACT_APP_FILESURL + item._id, "blank");
+    window.open(process.env.REACT_APP_FILESURL + item._id, 'blank');
   };
 
+  const handleAsignaMovimiento = (movRow) => {
+    const { _id: solId } = solicitud;
+    const asignaMovimiento = async () => {
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/solicitud/movimiento/asignar`,
+        { idMovimiento: movRow._id, solicitudId: solId }
+      );
+      getMovimientoView(movRow._id);
+      setSolicitud({
+        ...solicitud,
+        id_movimiento: movRow._id,
+      });
+    };
+    asignaMovimiento();
+  };
+
+  const { id_movimiento } = solicitud;
 
   return (
     <React.Fragment>
@@ -246,28 +280,37 @@ const AtenderSolicitud = () => {
             >
               <Tab label="Facturas a generar" />
               <Tab label="Archivo" />
-              <Tab label="Movimientos pendientes" />
+              <Tab label="Movimiento" />
             </Tabs>
           </Grid>
 
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-            <TabPanel value={activeTab} index={0}> 
-              <FacturasTable
-                onDelete={(facturaEdit) => handleDeleteClick(facturaEdit)}
-                OnUploadXML={(row) => OnUploadXML(row)}
-                OnUploadPDF={(row) => OnUploadPDF(row)}
-                facturas={facturas}
-              />
+              <TabPanel value={activeTab} index={0}>
+                <FacturasTable
+                  onDelete={(facturaEdit) => handleDeleteClick(facturaEdit)}
+                  OnUploadXML={(row) => OnUploadXML(row)}
+                  OnUploadPDF={(row) => OnUploadPDF(row)}
+                  facturas={facturas}
+                />
               </TabPanel>
-              <TabPanel value={activeTab} index={1}> 
-              <TableFiles
+              <TabPanel value={activeTab} index={1}>
+                <TableFiles
                   handleDownloadClick={(item) => handleDownloadClick(item)}
                   data={files}
-                /> 
+                />
+              </TabPanel>
+              <TabPanel value={activeTab} index={2}>
+                {id_movimiento === null ? (
+                  <MovimientoTable
+                    toggleTake={(item) => handleAsignaMovimiento(item)}
+                    movimientos={movimientos}
+                  />
+                ) : (
+                  <MovimientoView movimiento={movimiento} />
+                )}
               </TabPanel>
             </Paper>
-          
           </Grid>
         </Grid>
         <DialogBox
@@ -284,15 +327,15 @@ const AtenderSolicitud = () => {
         </DialogBox>
 
         <DropzoneDialog
-          acceptedFiles={[".xml"]}
-          cancelButtonText={"cancelar"}
-          submitButtonText={"subir XML"}
+          acceptedFiles={['.xml']}
+          cancelButtonText={'cancelar'}
+          submitButtonText={'subir XML'}
           filesLimit={1}
           maxFileSize={5000000}
           open={openFile}
           onClose={() => setOpenFile(false)}
           onSave={(files) => {
-            console.log("Files:", files);
+            console.log('Files:', files);
             setXml(files);
             setOpenFile(false);
           }}
@@ -301,15 +344,15 @@ const AtenderSolicitud = () => {
         />
 
         <DropzoneDialog
-          acceptedFiles={[".pdf"]}
-          cancelButtonText={"cancelar"}
-          submitButtonText={"subir PDF"}
+          acceptedFiles={['.pdf']}
+          cancelButtonText={'cancelar'}
+          submitButtonText={'subir PDF'}
           filesLimit={1}
           maxFileSize={5000000}
           open={openPDF}
           onClose={() => setOpenPDF(false)}
           onSave={(files) => {
-            console.log("Files:", files);
+            console.log('Files:', files);
             setPdf(files);
             setOpenPDF(false);
           }}
