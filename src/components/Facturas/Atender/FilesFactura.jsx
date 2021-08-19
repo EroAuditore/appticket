@@ -1,14 +1,12 @@
-import React from "react";
-import TableHead from "@material-ui/core/TableHead";
-import Button from "@material-ui/core/Button";
-import TableRow from "@material-ui/core/TableRow";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
+import React from 'react';
+import TableHead from '@material-ui/core/TableHead';
+import Button from '@material-ui/core/Button';
+import TableRow from '@material-ui/core/TableRow';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
 
-
-const FilesFactura = ({ handleDownloadClick }) => {
-  const data = [];
+const FilesFactura = ({ data, handleDownloadClick }) => {
   return (
     <Table aria-label="simple table">
       <TableHead>

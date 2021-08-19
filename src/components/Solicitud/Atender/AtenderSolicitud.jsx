@@ -201,7 +201,7 @@ const AtenderSolicitud = () => {
   const handleAsignaMovimiento = (movRow) => {
     const { _id: solId } = solicitud;
     const asignaMovimiento = async () => {
-      const response = await axios.post(
+      await axios.post(
         process.env.REACT_APP_API + `/solicitud/movimiento/asignar`,
         { idMovimiento: movRow._id, solicitudId: solId }
       );

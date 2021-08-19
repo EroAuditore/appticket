@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
+import React, { Fragment, useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import {
   Typography,
   Button,
@@ -9,25 +9,24 @@ import {
   Paper,
   Tab,
   Tabs,
-
   Fab,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
-import AddIcon from "@material-ui/icons/Add";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import Divider from "@material-ui/core/Divider";
-import moment from "moment";
-import CountUp from "react-countup";
-import { v4 as uuidv4 } from "uuid";
-import MovimientoForm from "./MovimientoForm";
-import TabPanel from "../../Common/TabPanel";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import AddIcon from '@material-ui/icons/Add';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Divider from '@material-ui/core/Divider';
+import moment from 'moment';
+import CountUp from 'react-countup';
+import { v4 as uuidv4 } from 'uuid';
+import MovimientoForm from './MovimientoForm';
+import TabPanel from '../../Common/TabPanel';
 import { MovimientoContext } from './../../Context/MovimientoContext';
-import DepositosTab from "../Common/Depositos/DepositosTab";
-import ModalForm from "../../Common/ModalForm";
+import DepositosTab from '../Common/Depositos/DepositosTab';
+import ModalForm from '../../Common/ModalForm';
 import DepositoForm from '../Common/Depositos/DepositoForm';
 import RetornoForm from './../Common/Retornos/RetornoForm';
 import ComisionForm from '../Common/Comisiones/ComisionForm';
@@ -37,6 +36,7 @@ import RetornosTab from './../Common/Retornos/RetornosTab';
 import ComisionTab from './../Common/Comisiones/ComisionTab';
 import { DropzoneArea } from 'material-ui-dropzone';
 import SolicitudTable from './../Common/Facturas/SolicitudTable';
+import SolicitudView from '../../Common/Solicitud/SolicitudView';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paperTitle: {
     padding: theme.spacing(1),
-    textAlign: "left",
+    textAlign: 'left',
     color: theme.palette.text.secondary,
   },
   paperModal: {
@@ -64,21 +64,22 @@ const useStyles = makeStyles((theme) => ({
   },
   previewChip: {
     minWidth: 160,
-    maxWidth: 210
-  }
+    maxWidth: 210,
+  },
 }));
 
 const NuevoMovimiento = () => {
   const classes = useStyles();
-  const {setAgentesList, 
-        setClientesList, 
-        depositos, 
-        setDepositos,
-        retornos,
-        setRetornos,
-        comisiones,
-        setComisiones 
-      } = useContext(MovimientoContext);
+  const {
+    setAgentesList,
+    setClientesList,
+    depositos,
+    setDepositos,
+    retornos,
+    setRetornos,
+    comisiones,
+    setComisiones,
+  } = useContext(MovimientoContext);
   const history = useHistory();
   const [activeTab, setActiveTab] = useState(0);
   const [ModalState, setModalState] = useState(false);
@@ -92,57 +93,56 @@ const NuevoMovimiento = () => {
   const [alertState, setAlertState] = useState(false);
   const [archivo, setArchivo] = useState([]);
   const [solicitudes, setSolicitudes] = useState([]);
+  const [solicitud, setSolicitud] = useState({});
 
-  
   const [deposito, setDeposito] = useState({
     _id: uuidv4(),
-    bancoDeposito: "",
-    depositoMonto: "",
-    nombreDeposito: "",
-    comentarioDeposito: "",
+    bancoDeposito: '',
+    depositoMonto: '',
+    nombreDeposito: '',
+    comentarioDeposito: '',
     fechaDeposito: new Date(),
-    fechaDepositoStr: moment().format("YYYY/MM/DD"),
+    fechaDepositoStr: moment().format('YYYY/MM/DD'),
   });
 
   const [retorno, setRetorno] = useState({
     _id: uuidv4(),
-    nombreRetorno: "",
-    entidadRetorno: "",
-    retornoMonto: "",
-    comentarioRetorno: "",
-    cuentaRetorno: "",
-    formaRetorno: "Efectivo",
-    Banco: "",
-    Cuenta_clabe: "",
-    codigoSwift: "",
-    direccionBanco: "",
+    nombreRetorno: '',
+    entidadRetorno: '',
+    retornoMonto: '',
+    comentarioRetorno: '',
+    cuentaRetorno: '',
+    formaRetorno: 'Efectivo',
+    Banco: '',
+    Cuenta_clabe: '',
+    codigoSwift: '',
+    direccionBanco: '',
   });
 
   const [comision, setComision] = useState({
     _id: uuidv4(),
-    Tipo: "Comision Agente",
+    Tipo: 'Comision Agente',
     Monto: 0,
-    Comentarios: "",
+    Comentarios: '',
     Porcentaje: 0,
   });
 
   const [movimiento, setMovimiento] = useState({
-    agente: "",
-    nombre: "",
-    cliente: "",
+    agente: '',
+    nombre: '',
+    cliente: '',
     cantidadTotal: 0,
     comisionAgente: 0,
     comisionOficina: 0,
-    estatusFactura: "Pendiente",
-    estatusRetorno: "Pendiente",
-    estatusDeposito: "Pendiente",
+    estatusFactura: 'Pendiente',
+    estatusRetorno: 'Pendiente',
+    estatusDeposito: 'Pendiente',
     totalDepositos: 0,
     totalRetornos: 0,
     totalComisiones: 0,
     solicitudId: null,
     idAgente: 0,
     idCliente: 0,
-    
   });
 
   const calculartotal = () => {
@@ -179,17 +179,16 @@ const NuevoMovimiento = () => {
     setTotalDepositos(
       parseFloat(totalDepositos) + parseFloat(deposito.depositoMonto)
     );
-    
-    
-    setDepositos([...depositos,deposito]);
+
+    setDepositos([...depositos, deposito]);
     setDeposito({
       _id: uuidv4(),
-      bancoDeposito: "",
-      depositoMonto: "",
-      nombreDeposito: "",
-      comentarioDeposito: "",
+      bancoDeposito: '',
+      depositoMonto: '',
+      nombreDeposito: '',
+      comentarioDeposito: '',
       fechaDeposito: new Date(),
-      fechaDepositoStr: moment().format("YYYY/MM/DD"),
+      fechaDepositoStr: moment().format('YYYY/MM/DD'),
     });
   };
 
@@ -197,19 +196,19 @@ const NuevoMovimiento = () => {
     setTotalRetornos(
       parseFloat(totalRetornos) + parseFloat(retorno.retornoMonto)
     );
-    setRetornos([...retornos, retorno ]);
+    setRetornos([...retornos, retorno]);
     setRetorno({
       _id: uuidv4(),
-      nombreRetorno: "",
-      entidadRetorno: "",
-      retornoMonto: "",
-      comentarioRetorno: "",
-      cuentaRetorno: "",
-      formaRetorno: "Efectivo",
-      Banco: "",
-      Cuenta_clabe: "",
-      codigoSwift: "",
-      direccionBanco: "",
+      nombreRetorno: '',
+      entidadRetorno: '',
+      retornoMonto: '',
+      comentarioRetorno: '',
+      cuentaRetorno: '',
+      formaRetorno: 'Efectivo',
+      Banco: '',
+      Cuenta_clabe: '',
+      codigoSwift: '',
+      direccionBanco: '',
     });
   };
 
@@ -221,8 +220,8 @@ const NuevoMovimiento = () => {
     setComision({
       _id: uuidv4(),
       Monto: 0,
-      Tipo: "Comision Agente",
-      Comentarios: "",
+      Tipo: 'Comision Agente',
+      Comentarios: '',
       porcentaje: 0,
     });
   };
@@ -258,7 +257,7 @@ const NuevoMovimiento = () => {
     setDeposito({
       ...deposito,
       fechaDeposito: date,
-      fechaDepositoStr: date.format("YYYY/MM/DD"),
+      fechaDepositoStr: date.format('YYYY/MM/DD'),
     });
   };
 
@@ -269,31 +268,19 @@ const NuevoMovimiento = () => {
   const handleDeleteClick = (obj) => {
     switch (activeTab) {
       case 0:
-        setDepositos(
-          [...depositos.filter(
-            depo => depo._id !== obj._id
-          )]
-        );
+        setDepositos([...depositos.filter((depo) => depo._id !== obj._id)]);
         setTotalDepositos(
           parseFloat(totalDepositos) - parseFloat(obj.depositoMonto)
         );
         break;
       case 1:
-        setRetornos(
-          [...retornos.filter(
-            ret => ret._id !== obj._id
-          )]
-        )
+        setRetornos([...retornos.filter((ret) => ret._id !== obj._id)]);
         setTotalRetornos(
           parseFloat(totalRetornos) - parseFloat(obj.retornoMonto)
         );
         break;
       case 2:
-        setComisiones(
-          [...comisiones.filter(
-            com => com._id !== obj._id
-          )]
-        )
+        setComisiones([...comisiones.filter((com) => com._id !== obj._id)]);
         setTotalComisiones(parseFloat(totalComisiones) - parseFloat(obj.Monto));
         break;
       default:
@@ -317,23 +304,24 @@ const NuevoMovimiento = () => {
     data.append('movimientoObj', json);
     try {
       const saveMovimiento = async () => {
-        const response = await axios.post(process.env.REACT_APP_API + `/movimiento/nuevo`, 
-        data, 
-        {
-          Accept: 'application/json',
-          'content-type': 'multipart/form-data',
-        }).then((response) => {
-          history.push("/movimientos");
-          console.log("Saved");
-        }, (error) => {
-          console.log("error", error);
-        });
-        
-      }
+        const response = await axios
+          .post(process.env.REACT_APP_API + `/movimiento/nuevo`, data, {
+            Accept: 'application/json',
+            'content-type': 'multipart/form-data',
+          })
+          .then(
+            (response) => {
+              history.push('/movimientos');
+              console.log('Saved');
+            },
+            (error) => {
+              console.log('error', error);
+            }
+          );
+      };
       saveMovimiento();
-
-    }catch(e){
-      console.log("Error al guardar", e);
+    } catch (e) {
+      console.log('Error al guardar', e);
     }
   };
 
@@ -361,16 +349,17 @@ const NuevoMovimiento = () => {
       totalRetornos: totalRetornos,
       totalComisiones: totalComisiones,
     });
-   
   }, [totalDepositos, totalRetornos, totalComisiones]);
 
   useEffect(() => {
     //consultamos con la api la base de datos llamamos startGetTickets
     const getAgentes = async () => {
-      const response = await axios.get(process.env.REACT_APP_API + `/listado/agente`);
+      const response = await axios.get(
+        process.env.REACT_APP_API + `/listado/agente`
+      );
       setAgentesList(response.data);
-    }
-    getAgentes()
+    };
+    getAgentes();
   }, []);
 
   const OnAgenteChange = (e) => {
@@ -385,9 +374,12 @@ const NuevoMovimiento = () => {
     getClientes(agente);
   };
   const getClientes = async (agente) => {
-    const response = await axios.post(process.env.REACT_APP_API + `/filtro/agente`, agente);
+    const response = await axios.post(
+      process.env.REACT_APP_API + `/filtro/agente`,
+      agente
+    );
     setClientesList(response.data);
-  }
+  };
 
   const OnClienteChange = (e) => {
     setMovimiento({
@@ -399,12 +391,15 @@ const NuevoMovimiento = () => {
     const cliente = {
       _id: e.target.value,
     };
-  //Solicitud de facturas pendientes de asignar
-  const getData = async () => {
-    const response = await axios.post(process.env.REACT_APP_API + `/facturas/pendientes/movimiento`, cliente);
-    setSolicitudes(response.data);
-  }
-  getData();
+    //Solicitud de facturas pendientes de asignar
+    const getData = async () => {
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/facturas/pendientes/movimiento`,
+        cliente
+      );
+      setSolicitudes(response.data);
+    };
+    getData();
 
     //dispatch(startSolicitud(cliente));
   };
@@ -422,27 +417,28 @@ const NuevoMovimiento = () => {
     setAlertState(!alertState);
   };
 
-  const handleFacturas =(solicitud)=>{
+  const handleFacturas = (solicitud) => {
     setModalStateFacturas(true);
     setSelectedTake(solicitud);
-  }
-  const onQuitarSolicitud = () =>{
+  };
+  const onQuitarSolicitud = () => {
     setMovimiento({
       ...movimiento,
-      solicitudId: null
-    }) 
-  }
-  const asignarSolicitud =(solicitud)=>{
-    console.log("Solicitud Asignada", solicitud);
+      solicitudId: null,
+    });
+  };
+  const asignarSolicitud = (asolicitud) => {
+    console.log('Solicitud Asignada', asolicitud);
     setMovimiento({
       ...movimiento,
       solicitudId: solicitud._id,
     });
-  }
+    setSolicitud(asolicitud);
+  };
 
-  let  { solicitudId } = movimiento; 
+  let { solicitudId } = movimiento;
 
-    return ( 
+  return (
     <Fragment>
       <Container>
         <Grid container spacing={1}>
@@ -464,7 +460,7 @@ const NuevoMovimiento = () => {
                 OnAgenteChange={OnAgenteChange}
                 OnClienteChange={OnClienteChange}
                 movimiento={movimiento}
-              /> 
+              />
             </Paper>
           </Grid>
           <Grid item xs={8}>
@@ -483,7 +479,6 @@ const NuevoMovimiento = () => {
                       decimals={2}
                       decimal="."
                       prefix="$ "
-                     
                     />
                   </Typography>
                 </Paper>
@@ -502,7 +497,6 @@ const NuevoMovimiento = () => {
                       decimals={2}
                       decimal="."
                       prefix="$ "
-                      
                     />
                   </Typography>
                 </Paper>
@@ -521,7 +515,6 @@ const NuevoMovimiento = () => {
                       decimals={2}
                       decimal="."
                       prefix="$ "
-                      
                     />
                   </Typography>
                 </Paper>
@@ -540,7 +533,6 @@ const NuevoMovimiento = () => {
                       decimals={2}
                       decimal="."
                       prefix="$ "
-                      
                     />
                   </Typography>
                 </Paper>
@@ -570,13 +562,11 @@ const NuevoMovimiento = () => {
           <Grid item xs={12}>
             <Paper className={classes.paper}>
               <TabPanel value={activeTab} index={0}>
-                  
                 <DepositosTab
                   handleDeleteClick={(obj) => handleDeleteClick(obj)}
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
-              
                 <RetornosTab
                   handleDeleteClick={(obj) => handleDeleteClick(obj)}
                 />
@@ -585,55 +575,66 @@ const NuevoMovimiento = () => {
                 <ComisionTab
                   handleDeleteClick={(obj) => handleDeleteClick(obj)}
                 />
-                </TabPanel>
+              </TabPanel>
               <TabPanel value={activeTab} index={3}>
-              
-                
                 <DropzoneArea
-                    showPreviews={true}
-                    showPreviewsInDropzone={false}
-                    useChipsForPreview
-                    previewGridProps={{container: { spacing: 1, direction: 'row' }}}
-                    previewChipProps={{classes: { root: classes.previewChip } }}
-                    previewText="Archivo cargado"
-                    onChange={(file) => handleFileUpload(file)}
-                    maxFileSize={3000000}
-                    acceptedFiles={[".xml", ".pdf", ".xlsx", ".xls", ".doc",".docx",".xml", ".csv"]}
-                    filesLimit={1}
-                    initialFiles={archivo}
-                  /> 
-                
+                  showPreviews={true}
+                  showPreviewsInDropzone={false}
+                  useChipsForPreview
+                  previewGridProps={{
+                    container: { spacing: 1, direction: 'row' },
+                  }}
+                  previewChipProps={{ classes: { root: classes.previewChip } }}
+                  previewText="Archivo cargado"
+                  onChange={(file) => handleFileUpload(file)}
+                  maxFileSize={3000000}
+                  acceptedFiles={[
+                    '.xml',
+                    '.pdf',
+                    '.xlsx',
+                    '.xls',
+                    '.doc',
+                    '.docx',
+                    '.xml',
+                    '.csv',
+                  ]}
+                  filesLimit={1}
+                  initialFiles={archivo}
+                />
               </TabPanel>
 
               <TabPanel value={activeTab} index={4}>
-                {
-                 solicitudId ===null ? (
+                {solicitudId === null ? (
                   <Fragment>
                     <h3>SOLICITUD DE FACTURAS PENDIENTES DE ASIGNAR </h3>
-                    <SolicitudTable solicitudes={solicitudes} onAsignar={(obj) => asignarSolicitud(obj)} />
-                    {/*<SolicitudFactura
-                    handleFacturas={(obj)=> handleFacturas(obj)}
-                    />*/}
-                  </Fragment>): 
-                 (
-                   <Fragment>
+                    <SolicitudTable
+                      solicitudes={solicitudes}
+                      onAsignar={(obj) => asignarSolicitud(obj)}
+                    />
+                  </Fragment>
+                ) : (
+                  <Fragment>
                     <h3>Solcitud Asignada al evento </h3>
-                    <FacturaTable />
-                    <Button size="small" color="primary" variant="contained" onClick={onQuitarSolicitud}>
+                    <SolicitudView solicitud={solicitud} />
+                    <Button
+                      size="small"
+                      color="primary"
+                      variant="contained"
+                      onClick={onQuitarSolicitud}
+                    >
                       QUITAR
                     </Button>
                   </Fragment>
-                 )
-                 }
+                )}
               </TabPanel>
             </Paper>
           </Grid>
         </Grid>
-       <ModalForm
+        <ModalForm
           ModalState={ModalState}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleSaveAdd}
-          ButtonText ={"Guardar"}
+          ButtonText={'Guardar'}
         >
           <Paper className={classes.paperModal}>
             {activeTab === 0 ? (
@@ -662,39 +663,40 @@ const NuevoMovimiento = () => {
         </ModalForm>
         <AlertForm
           alertState={alertState}
-          handleClose={ toggleTake}
+          handleClose={toggleTake}
           handleTake={handleTake}
-          title={"Enlace facturación"}
+          title={'Enlace facturación'}
         >
-          {"Deseas asignar la solicitud de factura al movimiento?"}
+          {'Deseas asignar la solicitud de factura al movimiento?'}
         </AlertForm>
-        
-         <ModalForm
+
+        <ModalForm
           ModalState={ModalStateFacturas}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleCloseAdd}
-          ButtonText ={"CERRAR"}
+          ButtonText={'CERRAR'}
         >
-        
-        <Card>
-        <CardHeader title="Asignar solicitud al movimiento" />
-      <Divider />
-      <CardContent>
-        <FacturaTable />
-        </CardContent>
-
-        </Card>
-        <CardActions>
-        <Button size="small" color="primary" variant="contained" onClick={toggleTake}>
-          ASIGNAR
-        </Button>
-      </CardActions>
-      
+          <Card>
+            <CardHeader title="Asignar solicitud al movimiento" />
+            <Divider />
+            <CardContent>
+              <FacturaTable />
+            </CardContent>
+          </Card>
+          <CardActions>
+            <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={toggleTake}
+            >
+              ASIGNAR
+            </Button>
+          </CardActions>
         </ModalForm>
-
       </Container>
     </Fragment>
-     );
-}
- 
+  );
+};
+
 export default NuevoMovimiento;

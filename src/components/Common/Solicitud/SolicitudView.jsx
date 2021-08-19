@@ -6,18 +6,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
 
-import MovimientoEstatus from './../../Common/MovimientoEstatus';
-
-const MovimientoFormView = ({ data }) => {
-  const {
-    Agente,
-    Cliente,
-    cantidadTotal,
-    estatusDeposito,
-    estatusRetorno,
-    estatusComision,
-  } = data;
-
+const SolicitudView = ({ solicitud }) => {
+  console.log('solicitud', solicitud);
+  const { Agente, Cliente, fecha, Total_Solicitud } = solicitud;
   return (
     <Table aria-label="simple table">
       <TableBody>
@@ -40,49 +31,21 @@ const MovimientoFormView = ({ data }) => {
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell colSpan={2}>
+          <TableCell>
             <Typography variant="body1" gutterBottom>
-              Monto Total:
+              Total Solicitud
             </Typography>
             <Typography variant="body2" gutterBottom color="textSecondary">
-              <NumberFormat
-                value={cantidadTotal}
-                displayType={'text'}
-                thousandSeparator={true}
-                prefix={'$'}
-              />
+              {Total_Solicitud}
             </Typography>
           </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
+          <TableCell align="left">
             <Typography variant="body1" gutterBottom>
-              Deposito:
+              fecha
             </Typography>
-          </TableCell>
-          <TableCell>
-            <MovimientoEstatus data={estatusDeposito} />
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            <Typography variant="body1" gutterBottom>
-              Retorno:
+            <Typography variant="body2" gutterBottom color="textSecondary">
+              {fecha}
             </Typography>
-          </TableCell>
-          <TableCell>
-            <MovimientoEstatus data={estatusRetorno} />
-          </TableCell>
-        </TableRow>
-
-        <TableRow>
-          <TableCell>
-            <Typography variant="body1" gutterBottom>
-              Comision:
-            </Typography>
-          </TableCell>
-          <TableCell>
-            <MovimientoEstatus data={estatusComision} />
           </TableCell>
         </TableRow>
       </TableBody>
@@ -90,4 +53,4 @@ const MovimientoFormView = ({ data }) => {
   );
 };
 
-export default MovimientoFormView;
+export default SolicitudView;

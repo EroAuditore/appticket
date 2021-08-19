@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router';
-import axios from "axios";
+import axios from 'axios';
 import {
   Button,
   Grid,
@@ -10,19 +10,19 @@ import {
   CardContent,
   Tabs,
   Tab,
-} from "@material-ui/core";
-import CardHeader from "@material-ui/core/CardHeader";
-import { makeStyles } from "@material-ui/core/styles";
-import { DropzoneDialog } from "material-ui-dropzone";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+} from '@material-ui/core';
+import CardHeader from '@material-ui/core/CardHeader';
+import { makeStyles } from '@material-ui/core/styles';
+import { DropzoneDialog } from 'material-ui-dropzone';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import FacturaGenView from "./FacturaGenView";
-import TabPanel from "./../../Common/TabPanel";
-import MovimientosPTable from "./MovimientosPTable";
-import AlertForm from "./../../Common/AlertForm";
-import MovimientoFormView from "./MovimientoFormView";
-import FacturaTempView from "./FacturaTempView";
-import FilesFactura from "./FilesFactura";
+import FacturaGenView from './FacturaGenView';
+import TabPanel from './../../Common/TabPanel';
+import MovimientosPTable from './MovimientosPTable';
+import AlertForm from './../../Common/AlertForm';
+import MovimientoFormView from './MovimientoFormView';
+import FacturaTempView from './FacturaTempView';
+import FilesFactura from './FilesFactura';
 import AlertFormInfo from './../../Common/AlertFormInfo';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,12 +31,17 @@ const useStyles = makeStyles((theme) => ({
   },
   paperTitle: {
     padding: theme.spacing(1),
-    textAlign: "left",
+    textAlign: 'left',
     color: theme.palette.text.secondary,
   },
   drawerContent: {
     width: 450,
     padding: 25,
+  },
+  paper: {
+    marginTop: theme.spacing(0),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(3),
   },
   paperContent: {
     padding: 30,
@@ -48,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AtenderFactura = () => {
   const classes = useStyles();
-  let { id :facturaId } = useParams();
+  let { id: facturaId } = useParams();
   const [xml, setXml] = useState([]);
   const [pdf, setPdf] = useState([]);
   const [factura, setFactura] = useState({});
@@ -59,11 +64,11 @@ const AtenderFactura = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [alertState, setAlertState] = useState(false);
   const [alertStateAM, setAlertStateAM] = useState(false);
-  const [processState,setProcessState] = useState(false);
+  const [processState, setProcessState] = useState(false);
+  const [files, setFiles] = useState([]);
 
-    const idMovimiento = null;
+  const { idMovimiento } = factura;
   const OnUploadXML = () => {
-    
     setOpenFile(true);
   };
 
@@ -80,24 +85,25 @@ const AtenderFactura = () => {
       const json = JSON.stringify(factura);
       data.append('solicitudObj', json);
       const uploadXml = async () => {
-        const response = await axios.post(process.env.REACT_APP_API + `/factura/xml/test`, 
-        data, 
-        {
-          Accept: 'application/json',
-          'content-type': 'multipart/form-data',
-        }).then((response) => {
-         console.log("uploaded", response);
-         setXmlUploaded({
-          ...response.data
-         })
-        }, (error) => {
-          console.log("error", error);
-        });
-        
-      }
+        const response = await axios
+          .post(process.env.REACT_APP_API + `/factura/xml/test`, data, {
+            Accept: 'application/json',
+            'content-type': 'multipart/form-data',
+          })
+          .then(
+            (response) => {
+              console.log('uploaded', response);
+              setXmlUploaded({
+                ...response.data,
+              });
+            },
+            (error) => {
+              console.log('error', error);
+            }
+          );
+      };
       uploadXml();
     }
-    
   }, [xml]);
 
   useEffect(() => {
@@ -121,36 +127,34 @@ const AtenderFactura = () => {
 
   const doUploadXML = () => {
     //subimos el XML a la nube
-    if (xml.length > 0)
-    {
+    if (xml.length > 0) {
       const data = new FormData();
       data.append('file', xml[0]);
       const json = JSON.stringify(factura);
       data.append('solicitudObj', json);
       const uploadXml = async () => {
-        const response = await axios.post(process.env.REACT_APP_API + `/factura/xml`, 
-        data, 
-        {
-          Accept: 'application/json',
-          'content-type': 'multipart/form-data',
-        }).then((response) => {
-         console.log("saved xml", response);
-         setFactura({
-          ...response.data[0]
-        })
-        
-        }, (error) => {
-          console.log("error", error);
-        });
-      }
-        uploadXml();
+        const response = await axios
+          .post(process.env.REACT_APP_API + `/factura/xml`, data, {
+            Accept: 'application/json',
+            'content-type': 'multipart/form-data',
+          })
+          .then(
+            (response) => {
+              console.log('saved xml', response);
+              setFactura({
+                ...response.data[0],
+              });
+            },
+            (error) => {
+              console.log('error', error);
+            }
+          );
+      };
+      uploadXml();
     }
-     
   };
 
-  const saveXML = () => {
-
-  }
+  const saveXML = () => {};
 
   //const processState = useSelector((state) => processSelector(state));
 
@@ -161,18 +165,36 @@ const AtenderFactura = () => {
     /*window.open(filesURL + item._id, "blank");*/
   };
 
-  useEffect(()=>{
-    
+  useEffect(() => {
+    const getMovimientoView = async (idMovimiento) => {
+      const response = await axios.get(
+        process.env.REACT_APP_API + `/movimiento/id/${idMovimiento}`
+      );
+      setMovimiento(response.data[0]);
+    };
+    const getDataFiles = async (solicitudId) => {
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/files/solicitud`,
+        { _id: solicitudId }
+      );
+      setFiles(response.data);
+    };
+
     const getFacturas = async () => {
-      const response = await axios.post(process.env.REACT_APP_API + `/factura/generar`, {_id: facturaId});
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/factura/generar`,
+        { _id: facturaId }
+      );
       console.log(response.data);
       setFactura({
-        ...response.data.factura
-      })
-      
-    }
+        ...response.data.factura,
+      });
+      getDataFiles(response.data.factura.solicitudId);
+      getMovimientoView(response.data.factura.idMovimiento);
+    };
+
     getFacturas();
-  },[])
+  }, []);
 
   return (
     <React.Fragment>
@@ -254,7 +276,7 @@ const AtenderFactura = () => {
             <Grid item md={8}>
               <Card>
                 <CardContent>
-                  {idMovimiento && <MovimientoFormView />}
+                  {idMovimiento && <MovimientoFormView data={movimiento} />}
                   {!idMovimiento && (
                     <MovimientosPTable toggleTake={toggleTake} />
                   )}
@@ -266,17 +288,20 @@ const AtenderFactura = () => {
             </Grid>
           </TabPanel>
           <TabPanel value={activeTab} index={2}>
-            <FilesFactura
-              handleDownloadClick={(item) => handleDownloadClick(item)}
-            />
+            <Paper className={classes.paper}>
+              <FilesFactura
+                data={files}
+                handleDownloadClick={(item) => handleDownloadClick(item)}
+              />
+            </Paper>
           </TabPanel>
         </Grid>
       </Grid>
 
       <DropzoneDialog
-        acceptedFiles={[".xml"]}
-        cancelButtonText={"cancelar"}
-        submitButtonText={"Subir XML"}
+        acceptedFiles={['.xml']}
+        cancelButtonText={'cancelar'}
+        submitButtonText={'Subir XML'}
         filesLimit={1}
         maxFileSize={5000000}
         open={openFile}
@@ -290,15 +315,15 @@ const AtenderFactura = () => {
       />
 
       <DropzoneDialog
-        acceptedFiles={[".pdf"]}
-        cancelButtonText={"cancelar"}
-        submitButtonText={"subir PDF"}
+        acceptedFiles={['.pdf']}
+        cancelButtonText={'cancelar'}
+        submitButtonText={'subir PDF'}
         filesLimit={1}
         maxFileSize={5000000}
         open={openPDF}
         onClose={() => setOpenPDF(false)}
         onSave={(files) => {
-          console.log("Files:", files);
+          console.log('Files:', files);
           setPdf(files);
           setOpenPDF(false);
         }}
@@ -310,28 +335,27 @@ const AtenderFactura = () => {
         alertState={alertStateAM}
         handleClose={toggleTake}
         handleTake={handleTake}
-        title={"Asignar movmiento"}
+        title={'Asignar movmiento'}
       >
-        {"Deseas asignar el movimiento a la factura?"}
+        {'Deseas asignar el movimiento a la factura?'}
       </AlertForm>
 
       <AlertForm
         alertState={alertState}
         handleClose={toggleTake}
         handleTake={handleTake}
-        title={"Guardar XML"}
+        title={'Guardar XML'}
       >
-        {"Deseas guardar el XML, se reemplazaran los datos capturados?"}
+        {'Deseas guardar el XML, se reemplazaran los datos capturados?'}
       </AlertForm>
-
 
       <AlertFormInfo
         alertState={processState}
         handleClose={handleProcess}
         handleTake={handleProcess}
-        title={"Acción realizada"}
+        title={'Acción realizada'}
       >
-        {"Documento cargado exitosamente"}
+        {'Documento cargado exitosamente'}
       </AlertFormInfo>
     </React.Fragment>
   );
