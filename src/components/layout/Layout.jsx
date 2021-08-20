@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -15,23 +15,23 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Link } from "react-router-dom";
-import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
-import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import SettingsIcon from "@material-ui/icons/Settings";
-import DescriptionIcon from "@material-ui/icons/Description";
-import PeopleIcon from "@material-ui/icons/People";
+import { Link } from 'react-router-dom';
+import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
+import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DescriptionIcon from '@material-ui/icons/Description';
+import PeopleIcon from '@material-ui/icons/People';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none",
+    display: 'none',
   },
   drawer: {
     width: drawerWidth,
@@ -58,32 +58,32 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   drawerHeader: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
+    transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
   },
   contentShift: {
-    transition: theme.transitions.create("margin", {
+    transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
   },
   sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
     },
   },
   grow: {
@@ -91,51 +91,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Layout = ( {children}) => {
-    const classes = useStyles();
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const [user, setUser] = useState(null);
-  
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleDrawerClose = () => {
-      setOpen(false);
-    };
-    const handleListItemClick = (event, index) => {
-      setSelectedIndex(index);
-    };
-    return ( 
-      <React.Fragment>
+const Layout = ({ children }) => {
+  const classes = useStyles();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [user, setUser] = useState(null);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
+  return (
+    <React.Fragment>
       <div className={classes.root}>
-        
         <CssBaseline />
-          <AppBar
-            position="fixed"
-            className={clsx(classes.appBar, {
-              [classes.appBarShift]: open,
-            })}
-          >
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                className={clsx(classes.menuButton, open && classes.hide)}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap>
-                Sistema de tickets
-              </Typography>
-              <div className={classes.grow} />
-            </Toolbar>
-          </AppBar>
-        
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, open && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap>
+              Sistema de tickets
+            </Typography>
+            <div className={classes.grow} />
+          </Toolbar>
+        </AppBar>
+
         <Drawer
           className={classes.drawer}
           variant="persistent"
@@ -147,11 +146,11 @@ const Layout = ( {children}) => {
         >
           <div className={classes.drawerHeader}>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? (
+              {theme.direction === 'ltr' ? (
                 <ChevronLeftIcon />
               ) : (
-                  <ChevronRightIcon />
-                )}
+                <ChevronRightIcon />
+              )}
             </IconButton>
           </div>
           <Divider />
@@ -168,8 +167,6 @@ const Layout = ( {children}) => {
               </ListItemIcon>
               <ListItemText primary="Movimientos" />
             </ListItem>
-
-           
 
             <ListItem
               button
@@ -243,12 +240,12 @@ const Layout = ( {children}) => {
             selected={selectedIndex === 8}
             onClick={(event) => handleListItemClick(event, 8)}
             component={Link}
-            to="/dashboard"
+            to="/reportes"
           >
             <ListItemIcon>
               <AssessmentIcon />
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <ListItemText primary="Reportes" />
           </ListItem>
         </Drawer>
         <main
@@ -262,7 +259,7 @@ const Layout = ( {children}) => {
         </main>
       </div>
     </React.Fragment>
-   );
-}
- 
+  );
+};
+
 export default Layout;

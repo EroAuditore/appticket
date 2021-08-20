@@ -18,6 +18,7 @@
     "dotenv": "^8.2.0",
     "joi-browser": "^13.4.0",
     "jwt-decode": "^3.1.2",
+    "material-table": "^1.69.3",
     "material-ui-dropzone": "^3.5.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
