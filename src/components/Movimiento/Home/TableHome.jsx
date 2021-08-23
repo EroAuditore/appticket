@@ -1,27 +1,26 @@
-import React, { useContext } from "react";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import Button from "@material-ui/core/Button";
+import React, { useContext } from 'react';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import Button from '@material-ui/core/Button';
 
-import NumberFormat from "react-number-format";
+import NumberFormat from 'react-number-format';
 
 import Moment from 'react-moment';
 import MovimientoEstatus from './../../Common/MovimientoEstatus';
 import { MovimientoContext } from './../../Context/MovimientoContext';
 
 const TableHome = ({ toggleTake }) => {
- 
-    const { movimientos } = useContext(MovimientoContext);
+  const { movimientos } = useContext(MovimientoContext);
 
   return (
     <Table aria-label="simple table">
       <TableHead>
         <TableRow>
           <TableCell>#</TableCell>
-          
+
           <TableCell align="left">Agente</TableCell>
           <TableCell align="left">Cliente</TableCell>
           <TableCell align="left">Fecha</TableCell>
@@ -41,16 +40,14 @@ const TableHome = ({ toggleTake }) => {
             <TableCell align="left">{row.Agente}</TableCell>
             <TableCell align="left">{row.Cliente}</TableCell>
             <TableCell align="left">
-              <Moment format="YYYY/MM/DD">
-                {row.fecha}
-            </Moment>
+              <Moment format="YYYY/MM/DD">{row.fecha}</Moment>
             </TableCell>
             <TableCell align="left">
               <NumberFormat
                 value={row.cantidadTotal}
-                displayType={"text"}
+                displayType={'text'}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={'$'}
               />
             </TableCell>
             <TableCell align="left">
@@ -64,7 +61,6 @@ const TableHome = ({ toggleTake }) => {
             </TableCell>
             <TableCell align="left">
               <Button
-                
                 variant="contained"
                 size="small"
                 color="primary"
