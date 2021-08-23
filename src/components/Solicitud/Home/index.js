@@ -73,12 +73,7 @@ const Home = () => {
               <h2>Solicitudes de Facturación</h2>
             </div>
           </Grid>
-          <Grid item xs>
-            <CustomTextBox
-              onClick={handleFilterClick}
-              onChange={handleFiltertextChange}
-            />
-          </Grid>
+
           <Grid item xs>
             <Button
               variant="contained"
@@ -88,17 +83,6 @@ const Home = () => {
               onClick={handleAddTicket}
             >
               Nuevo
-            </Button>
-          </Grid>
-          <Grid item xs>
-            <Button
-              variant="outlined"
-              size="small"
-              color="primary"
-              onClick={toggleDrawer}
-              startIcon={<FilterListIcon />}
-            >
-              Filtros
             </Button>
           </Grid>
         </Grid>
