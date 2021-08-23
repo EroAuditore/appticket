@@ -1,15 +1,15 @@
-import React, { useEffect, useState,useContext } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { Button, Container, Grid, Paper, Drawer } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import TableContainer from "@material-ui/core/TableContainer";
-import CreateIcon from "@material-ui/icons/Create";
+import React, { useEffect, useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { Button, Container, Grid, Paper, Drawer } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import TableContainer from '@material-ui/core/TableContainer';
+import CreateIcon from '@material-ui/icons/Create';
 import CustomTextBox from './../../Common/CustomTextBox';
 import TableHome from './TableHome';
 import { SolicitudContext } from '../../Context/SolicitudContext';
-
+import TblSearchHome from './TblSearchHome';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paperTitle: {
     padding: theme.spacing(1),
-    textAlign: "left",
+    textAlign: 'left',
     color: theme.palette.text.secondary,
   },
   drawerContent: {
@@ -29,47 +29,44 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const history = useHistory();
-  const {setSolicitudes} = useContext(SolicitudContext);
+  const { setSolicitudes } = useContext(SolicitudContext);
   const [drawerState, setdrawerState] = useState(false);
   const [alertState, setAlertState] = useState(false);
   const [data, setData] = useState([]);
-  const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState('');
   const toggleDrawer = () => {
     setdrawerState(!drawerState);
   };
 
   const handleAddTicket = () => {
-    history.push("/solicitudes/nuevo");
+    history.push('/solicitudes/nuevo');
   };
 
-  const handleFilterClick = () => {
-   
-  };
+  const handleFilterClick = () => {};
 
-  const handleTake = () => {
-    
-  };
+  const handleTake = () => {};
 
   const selectedTake = (row) => {
-    history.push(`/solicitudes/atender/${row._id}`)
+    history.push(`/solicitudes/atender/${row._id}`);
   };
 
   const handleFiltertextChange = (e) => {
     setFilterText(e.target.value);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const getData = async () => {
-      const response = await axios.get(process.env.REACT_APP_API + `/facturas/solicitudes`);
+      const response = await axios.get(
+        process.env.REACT_APP_API + `/facturas/solicitudes`
+      );
       setSolicitudes(response.data);
-    }
+    };
     getData();
-  },[]);
- 
+  }, []);
 
-    return ( 
+  return (
     <React.Fragment>
-    <Container>
+      <Container>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <div className={classes.paperTitle}>
@@ -108,18 +105,21 @@ const Home = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
-                <TableHome data={data} selectedTake={(row) => selectedTake(row)} />
+              <TblSearchHome
+                data={data}
+                selectedTake={(row) => selectedTake(row)}
+              />
             </TableContainer>
           </Grid>
         </Grid>
-        <Drawer anchor="right" open={drawerState} onClose={toggleDrawer}>
-         
-        </Drawer>
-       
+        <Drawer
+          anchor="right"
+          open={drawerState}
+          onClose={toggleDrawer}
+        ></Drawer>
       </Container>
-   
-        </React.Fragment>
-     );
-}
- 
+    </React.Fragment>
+  );
+};
+
 export default Home;

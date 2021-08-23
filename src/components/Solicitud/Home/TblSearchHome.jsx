@@ -17,7 +17,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import MovimientoEstatus from './../../Common/MovimientoEstatus';
-import { MovimientoContext } from './../../Context/MovimientoContext';
+
+import { SolicitudContext } from '../../Context/SolicitudContext';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -42,8 +43,43 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
-const TblSearchHome = ({ toggleTake }) => {
-  const { movimientos } = useContext(MovimientoContext);
+
+const renderCell = (item) => {
+  let renderText = '';
+  let renderClass = '';
+  switch (item) {
+    case '1': {
+      renderText = 'Pendiente';
+      renderClass = 'badge bg-secondary';
+      break;
+    }
+    case '2': {
+      renderText = 'Atendiendo';
+      renderClass = 'badge bg-warning';
+      break;
+    }
+    case '3': {
+      renderText = 'Finalizado';
+      renderClass = 'badge bg-success';
+      break;
+    }
+
+    default: {
+      renderText = 'Pendiente';
+      renderClass = 'badge bg-secondary';
+      break;
+    }
+  }
+
+  return (
+    <h6>
+      <span className={renderClass}>{renderText}</span>
+    </h6>
+  );
+};
+
+const TblSearchHome = ({ selectedTake }) => {
+  const { solicitudes } = useContext(SolicitudContext);
   return (
     <>
       <MaterialTable
@@ -54,44 +90,32 @@ const TblSearchHome = ({ toggleTake }) => {
           { title: 'Agente', field: 'Agente' },
           { title: 'Cliente', field: 'Cliente' },
           { title: 'Fecha', field: 'fecha', type: 'date' },
-          { title: 'Cantidad total', field: 'cantidadTotal', type: 'currency' },
           {
-            title: 'Deposito',
-            field: 'estatusDeposito',
-            render: (rowData) => (
-              <MovimientoEstatus data={rowData.estatusDeposito} />
-            ),
+            title: 'Cantidad total',
+            field: 'Total_Solicitud',
+            type: 'currency',
           },
           {
-            title: 'Retorno',
-            field: 'estatusRetorno',
-            render: (rowData) => (
-              <MovimientoEstatus data={rowData.estatusRetorno} />
-            ),
+            title: 'Estatus',
+            field: 'Estatus_Facturacion',
+            render: (rowData) => renderCell(rowData.Estatus_Facturacion),
           },
-          {
-            title: 'Comision',
-            field: 'estatusComision',
-            render: (rowData) => (
-              <MovimientoEstatus data={rowData.estatusComision} />
-            ),
-          },
+
           {
             title: '',
-
             render: (rowData) => (
               <Button
                 variant="contained"
                 size="small"
                 color="primary"
-                onClick={() => toggleTake(rowData)}
+                onClick={() => selectedTake(rowData)}
               >
                 Validar
               </Button>
             ),
           },
         ]}
-        data={movimientos}
+        data={solicitudes}
       />
     </>
   );
