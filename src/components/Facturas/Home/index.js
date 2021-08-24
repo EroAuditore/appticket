@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import {
-  Button,
-  Container,
-  Grid,
-  Paper,
-  Drawer,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import TableContainer from "@material-ui/core/TableContainer";
-import AlertTomar from "./AlertTomar";
-import FilterForm from "./FilterForm";
-import TableHome from './TableHome';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { Button, Container, Grid, Paper, Drawer } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import TableContainer from '@material-ui/core/TableContainer';
+import AlertTomar from './AlertTomar';
+import FilterForm from './FilterForm';
+
 import CustomTextBox from './../../Common/CustomTextBox';
+import TblSearchHome from './TblSearchHome';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -22,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paperTitle: {
     padding: theme.spacing(1),
-    textAlign: "left",
+    textAlign: 'left',
     color: theme.palette.text.secondary,
   },
   drawerContent: {
@@ -34,12 +29,9 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
 
-
-  
-
   const [drawerState, setdrawerState] = useState(false);
   const [alertState, setAlertState] = useState(false);
-  const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState('');
   const [selectedTake, setSelectedTake] = useState({});
   const [facturas, setFacturas] = useState([]);
   const history = useHistory();
@@ -49,8 +41,7 @@ const Home = () => {
   };
 
   const handleTake = () => {
-      
-      history.push("/facturas/atender/"+ selectedTake._id );
+    history.push('/facturas/atender/' + selectedTake._id);
     //dispatch(startGenFactura(selectedTake));
     //dispatch(startGetMovimientoP(selectedTake));
   };
@@ -74,15 +65,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    //consultamos con la api la base de datos llamamos startGetTickets
-    //const getFacturas = () => dispatch(startGetFacturas());
-    //getFacturas(); getFacturas
     const getFacturas = async () => {
-        const response = await axios.get(process.env.REACT_APP_API + `/facturas/movimientos`);
-        console.log(response.data);
-        setFacturas([...response.data]);
-      }
-      getFacturas();
+      const response = await axios.get(
+        process.env.REACT_APP_API + `/facturas/movimientos`
+      );
+      console.log(response.data);
+      setFacturas([...response.data]);
+    };
+    getFacturas();
 
     //setSelectedTake({ ...selectedTake, currentUserId: getCurrentUserID() });
   }, []);
@@ -96,14 +86,14 @@ const Home = () => {
               <h2>Facturación</h2>
             </div>
           </Grid>
-          <Grid item xs>
+          {/* <Grid item xs>
             <CustomTextBox
               onClick={handleFilterClick}
               onChange={handleFiltertextChange}
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs></Grid>
-          <Grid item xs>
+          {/* <Grid item xs>
             <Button
               variant="outlined"
               size="small"
@@ -112,13 +102,16 @@ const Home = () => {
               startIcon={<FilterListIcon />}
             >
               Filtros
-            </Button>
-          </Grid>
+            </Button> 
+          </Grid>*/}
         </Grid>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TableContainer component={Paper}>
-              <TableHome data={facturas} toggleTake={(row) => toggleTake(row)} />
+              <TblSearchHome
+                data={facturas}
+                toggleTake={(row) => toggleTake(row)}
+              />
             </TableContainer>
           </Grid>
         </Grid>
