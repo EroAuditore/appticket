@@ -1,14 +1,14 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import NumberFormat from "react-number-format";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import FacturaEstatus from "./../../Common/FacturaEstatus";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import NumberFormat from 'react-number-format';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import FacturaEstatus from './../../Common/FacturaEstatus';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FacturasTable = ({ OnUploadXML, OnUploadPDF, facturas : data }) => {
+const FacturasTable = ({ OnUploadXML, OnUploadPDF, facturas: data }) => {
   const classes = useStyles();
- 
+
   return (
     <Table className={classes.table} aria-label="simple table">
       <TableHead>
@@ -48,25 +48,25 @@ const FacturasTable = ({ OnUploadXML, OnUploadPDF, facturas : data }) => {
             <TableCell align="left">
               <NumberFormat
                 value={row.subTotal}
-                displayType={"text"}
+                displayType={'text'}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={'$'}
               />
             </TableCell>
             <TableCell align="left">
               <NumberFormat
                 value={row.iva}
-                displayType={"text"}
+                displayType={'text'}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={'$'}
               />
             </TableCell>
             <TableCell align="left">
               <NumberFormat
                 value={row.montoTotal}
-                displayType={"text"}
+                displayType={'text'}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={'$'}
               />
             </TableCell>
             <TableCell align="left">{row.empresaFacturadora}</TableCell>
@@ -86,18 +86,6 @@ const FacturasTable = ({ OnUploadXML, OnUploadPDF, facturas : data }) => {
                 size="small"
               >
                 XML
-              </Button>
-            </TableCell>
-            <TableCell align="left">
-              <Button
-                variant="contained"
-                color="default"
-                className={classes.button}
-                startIcon={<CloudUploadIcon />}
-                onClick={() => OnUploadPDF(row)}
-                size="small"
-              >
-                PDF
               </Button>
             </TableCell>
           </TableRow>

@@ -65,7 +65,7 @@ const renderCell = (item) => {
     }
 
     default: {
-      renderText = 'Pendiente';
+      renderText = 'Pendiente s';
       renderClass = 'badge bg-secondary';
       break;
     }
@@ -98,7 +98,7 @@ const TblSearchHome = ({ selectedTake }) => {
           {
             title: 'Estatus',
             field: 'Estatus_Facturacion',
-            render: (rowData) => renderCell(rowData.Estatus_Facturacion),
+            render: (rowData) => renderCell(rowData.Estatus_solicitud),
           },
 
           {

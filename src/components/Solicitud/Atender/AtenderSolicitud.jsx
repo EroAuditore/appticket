@@ -63,6 +63,7 @@ const AtenderSolicitud = () => {
   const [xml, setXml] = useState([]);
   const [pdf, setPdf] = useState([]);
   const [files, setFiles] = useState([]);
+  const history = useHistory();
   let { id: solicitudId } = useParams();
 
   const [solicitud, setSolicitud] = useState({
@@ -129,7 +130,8 @@ const AtenderSolicitud = () => {
 
   const OnUploadXML = (row) => {
     //setFactura({ ...row, userId: getCurrentUserID() });
-    setOpenFile(true);
+    history.push(`/facturas/atender/${row._id}`);
+    //setOpenFile(true);
   };
 
   const OnUploadPDF = (row) => {
