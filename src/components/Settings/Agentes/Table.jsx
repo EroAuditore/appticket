@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import MaterialTable from 'material-table';
 import Button from '@material-ui/core/Button';
 import { AddBox, ArrowDownward } from '@material-ui/icons';
@@ -16,8 +16,6 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
-import { SolicitudContext } from '../../Context/SolicitudContext';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -43,42 +41,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const renderCell = (item) => {
-  let renderText = '';
-  let renderClass = '';
-  switch (item) {
-    case '1': {
-      renderText = 'Pendiente';
-      renderClass = 'badge bg-secondary';
-      break;
-    }
-    case '2': {
-      renderText = 'Atendiendo';
-      renderClass = 'badge bg-warning';
-      break;
-    }
-    case '3': {
-      renderText = 'Finalizado';
-      renderClass = 'badge bg-success';
-      break;
-    }
-
-    default: {
-      renderText = 'Pendiente s';
-      renderClass = 'badge bg-secondary';
-      break;
-    }
-  }
-
-  return (
-    <h6>
-      <span className={renderClass}>{renderText}</span>
-    </h6>
-  );
-};
-
-const TblSearchHome = ({ selectedTake }) => {
-  const { solicitudes } = useContext(SolicitudContext);
+const Table = ({ data }) => {
   return (
     <>
       <MaterialTable
@@ -87,19 +50,6 @@ const TblSearchHome = ({ selectedTake }) => {
         columns={[
           { title: '#', field: '_id' },
           { title: 'Agente', field: 'Agente' },
-          { title: 'Cliente', field: 'Cliente' },
-          { title: 'Fecha', field: 'fecha', type: 'date' },
-          {
-            title: 'Cantidad total',
-            field: 'Total_Solicitud',
-            type: 'currency',
-          },
-          {
-            title: 'Estatus',
-            field: 'Estatus_Facturacion',
-            render: (rowData) => renderCell(rowData.Estatus_solicitud),
-          },
-
           {
             title: '',
             render: (rowData) => (
@@ -107,17 +57,17 @@ const TblSearchHome = ({ selectedTake }) => {
                 variant="contained"
                 size="small"
                 color="primary"
-                onClick={() => selectedTake(rowData)}
+                // onClick={() => selectedTake(rowData)}
               >
-                Validar
+                Editar
               </Button>
             ),
           },
         ]}
-        data={solicitudes}
+        data={data}
       />
     </>
   );
 };
 
-export default TblSearchHome;
+export default Table;

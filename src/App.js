@@ -14,6 +14,7 @@ import { Atender as AtenderSol } from './components/Solicitud/Atender/index';
 import Facturas from './components/Facturas/index';
 import { Atender as AtenderFac } from './components/Facturas/Atender/index';
 import Reports from './components/Reports/index';
+import Agentes from './components/Settings/Agentes/index';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/movimientos" component={Movimiento} />
           <Route path="/settings" component={Settings} />
           <Route path="/reportes" component={Reports} />
+          <Route path="/agentes" component={Agentes} />
           <Route path="/" exact component={Login} />
         </Switch>
       </Layout>
