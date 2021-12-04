@@ -50,6 +50,10 @@ const Table = ({ data }) => {
         columns={[
           { title: '#', field: '_id' },
           { title: 'Agente', field: 'Agente' },
+          { title: 'Cliente', field: 'Nombre' },
+          { title: 'RFC', field: 'RFC' },
+          { title: 'Direccion', field: 'direccion' },
+          { title: 'Email', field: 'email' },
           {
             title: '',
             render: (rowData) => (
