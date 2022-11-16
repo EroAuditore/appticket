@@ -15,6 +15,7 @@ import Facturas from './components/Facturas/index';
 import { Atender as AtenderFac } from './components/Facturas/Atender/index';
 import Reports from './components/Reports/index';
 import Agentes from './components/Settings/Agentes/index';
+import Clientes from './components/Settings/Clientes';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/settings" component={Settings} />
           <Route path="/reportes" component={Reports} />
           <Route path="/agentes" component={Agentes} />
+          <Route path="/clientes" component={Clientes} />
           <Route path="/" exact component={Login} />
         </Switch>
       </Layout>
