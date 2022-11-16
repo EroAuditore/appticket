@@ -10,12 +10,10 @@ import NumberFormat from "react-number-format";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import { SolicitudContext } from './../../Context/SolicitudContext';
-
+import { SolicitudContext } from "../Context/SolicitudContext";
 
 const FacturaTable = ({ onDelete, handleAddClick }) => {
- 
-  const { facturas : data} =  useContext(SolicitudContext)
+  const { facturas: data } = useContext(SolicitudContext);
   return (
     <Table aria-label="simple table">
       <TableHead>

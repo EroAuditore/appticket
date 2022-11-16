@@ -1,14 +1,11 @@
-import React from 'react';
-import AtenderFactura from './AtenderFactura';
-import FacturasProvider from '../../Context/SolicitudContext';
-
+import React from "react";
+import FacturasProvider from "../Context/FacturasContext";
+import AtenderFactura from "./AtenderFactura";
 
 export const Atender = () => {
-    
-
-    return ( 
-        <FacturasProvider> 
-            <AtenderFactura />
-        </FacturasProvider>
-     );
-}
+  return (
+    <FacturasProvider>
+      <AtenderFactura />
+    </FacturasProvider>
+  );
+};

@@ -7,12 +7,12 @@ import TableCell from "@material-ui/core/TableCell";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import NumberFormat from "react-number-format";
-import { MovimientoContext } from "../../../Context/MovimientoContext";
+import { MovimientoContext } from "./../../Context/MovimientoContext";
 
 const DepositosTab = (props) => {
   const { handleDeleteClick } = props;
-  const { depositos : data } = useContext(MovimientoContext);
-  
+  const { depositos: data } = useContext(MovimientoContext);
+
   return (
     <Table aria-label="simple table">
       <TableHead>

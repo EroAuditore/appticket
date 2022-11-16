@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { Button, Container, Grid, Paper, Drawer } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import TableContainer from '@material-ui/core/TableContainer';
-import CreateIcon from '@material-ui/icons/Create';
-import CustomTextBox from './../../Common/CustomTextBox';
-import TableHome from './TableHome';
-import { MovimientoContext } from '../../Context/MovimientoContext';
-import TblSearchHome from './TblSearchHome';
+import React, { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { Button, Container, Grid, Paper, Drawer } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import TableContainer from "@material-ui/core/TableContainer";
+import CreateIcon from "@material-ui/icons/Create";
+import CustomTextBox from "./../../Common/CustomTextBox";
+import TableHome from "./TableHome";
+import { MovimientoContext } from "../Context/MovimientoContext";
+import TblSearchHome from "./TblSearchHome";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paperTitle: {
     padding: theme.spacing(1),
-    textAlign: 'left',
+    textAlign: "left",
     color: theme.palette.text.secondary,
   },
   drawerContent: {
@@ -33,13 +33,13 @@ const Home = () => {
   const [drawerState, setdrawerState] = useState(false);
   const [alertState, setAlertState] = useState(false);
   const [data, setData] = useState([]);
-  const [filterText, setFilterText] = useState('');
+  const [filterText, setFilterText] = useState("");
   const toggleDrawer = () => {
     setdrawerState(!drawerState);
   };
 
   const handleAddTicket = () => {
-    history.push('/movimientos/nuevo');
+    history.push("/movimientos/nuevo");
   };
 
   const handleFilterClick = () => {};
@@ -60,7 +60,7 @@ const Home = () => {
       setMovimientos(response.data);
     };
     getMovimientos();
-  }, []);
+  }, [setMovimientos]);
 
   return (
     <React.Fragment>

@@ -1,13 +1,11 @@
-
 import React, { Fragment, useContext } from "react";
 
 import { Grid, TextField, Typography, FormControl } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import NumberFormatCustom from './../../Common/NumberFormartCustom';
-import { MovimientoContext } from './../../Context/MovimientoContext';
-
+import NumberFormatCustom from "./../../Common/NumberFormartCustom";
+import { MovimientoContext } from "./../Context/MovimientoContext";
 
 const MovimientoForm = (props) => {
   const { onChange, movimiento, OnAgenteChange, OnClienteChange } = props;

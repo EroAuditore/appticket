@@ -1,4 +1,3 @@
-
 import React, { Fragment, useContext } from "react";
 
 import { Grid, TextField, Typography, FormControl } from "@material-ui/core";
@@ -6,17 +5,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
-import { SolicitudContext } from './../../Context/SolicitudContext';
-
-
+import { SolicitudContext } from "../Context/SolicitudContext";
 
 const Form = (props) => {
   const { data, OnAgenteChange, OnClienteChange } = props;
-  const {  Agente, Cliente } = data;
+  const { Agente, Cliente } = data;
   const { agentesList, clientesList } = useContext(SolicitudContext);
   return (
     <Fragment>
-      
       <Grid container spacing={1}>
         <Grid item xs={12} sm={12}>
           <FormControl fullWidth size="small">
@@ -58,9 +54,7 @@ const Form = (props) => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12}>
-          
-        </Grid>
+        <Grid item xs={12}></Grid>
       </Grid>
     </Fragment>
   );

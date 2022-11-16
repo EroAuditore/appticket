@@ -1,6 +1,6 @@
-import React, { Fragment, useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import React, { Fragment, useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 import {
   Typography,
   Button,
@@ -10,33 +10,33 @@ import {
   Tab,
   Tabs,
   Fab,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import AddIcon from '@material-ui/icons/Add';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Divider from '@material-ui/core/Divider';
-import moment from 'moment';
-import CountUp from 'react-countup';
-import { v4 as uuidv4 } from 'uuid';
-import MovimientoForm from './MovimientoForm';
-import TabPanel from '../../Common/TabPanel';
-import { MovimientoContext } from './../../Context/MovimientoContext';
-import DepositosTab from '../Common/Depositos/DepositosTab';
-import ModalForm from '../../Common/ModalForm';
-import DepositoForm from '../Common/Depositos/DepositoForm';
-import RetornoForm from './../Common/Retornos/RetornoForm';
-import ComisionForm from '../Common/Comisiones/ComisionForm';
-import AlertForm from './../../Common/AlertForm';
-import FacturaTable from '../Common/Facturas/FacturaTable';
-import RetornosTab from './../Common/Retornos/RetornosTab';
-import ComisionTab from './../Common/Comisiones/ComisionTab';
-import { DropzoneArea } from 'material-ui-dropzone';
-import SolicitudTable from './../Common/Facturas/SolicitudTable';
-import SolicitudView from '../../Common/Solicitud/SolicitudView';
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import AddIcon from "@material-ui/icons/Add";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import Divider from "@material-ui/core/Divider";
+import moment from "moment";
+import CountUp from "react-countup";
+import { v4 as uuidv4 } from "uuid";
+import MovimientoForm from "./MovimientoForm";
+import TabPanel from "../../Common/TabPanel";
+import DepositosTab from "../Common/Depositos/DepositosTab";
+import ModalForm from "../../Common/ModalForm";
+import DepositoForm from "../Common/Depositos/DepositoForm";
+import RetornoForm from "./../Common/Retornos/RetornoForm";
+import ComisionForm from "../Common/Comisiones/ComisionForm";
+import AlertForm from "./../../Common/AlertForm";
+import FacturaTable from "../Common/Facturas/FacturaTable";
+import RetornosTab from "./../Common/Retornos/RetornosTab";
+import ComisionTab from "./../Common/Comisiones/ComisionTab";
+import { DropzoneArea } from "material-ui-dropzone";
+import SolicitudTable from "./../Common/Facturas/SolicitudTable";
+import SolicitudView from "../../Common/Solicitud/SolicitudView";
+import { MovimientoContext } from "./../Context/MovimientoContext";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paperTitle: {
     padding: theme.spacing(1),
-    textAlign: 'left',
+    textAlign: "left",
     color: theme.palette.text.secondary,
   },
   paperModal: {
@@ -97,46 +97,46 @@ const NuevoMovimiento = () => {
 
   const [deposito, setDeposito] = useState({
     _id: uuidv4(),
-    bancoDeposito: '',
-    depositoMonto: '',
-    nombreDeposito: '',
-    comentarioDeposito: '',
+    bancoDeposito: "",
+    depositoMonto: "",
+    nombreDeposito: "",
+    comentarioDeposito: "",
     fechaDeposito: new Date(),
-    fechaDepositoStr: moment().format('YYYY/MM/DD'),
+    fechaDepositoStr: moment().format("YYYY/MM/DD"),
   });
 
   const [retorno, setRetorno] = useState({
     _id: uuidv4(),
-    nombreRetorno: '',
-    entidadRetorno: '',
-    retornoMonto: '',
-    comentarioRetorno: '',
-    cuentaRetorno: '',
-    formaRetorno: 'Efectivo',
-    Banco: '',
-    Cuenta_clabe: '',
-    codigoSwift: '',
-    direccionBanco: '',
+    nombreRetorno: "",
+    entidadRetorno: "",
+    retornoMonto: "",
+    comentarioRetorno: "",
+    cuentaRetorno: "",
+    formaRetorno: "Efectivo",
+    Banco: "",
+    Cuenta_clabe: "",
+    codigoSwift: "",
+    direccionBanco: "",
   });
 
   const [comision, setComision] = useState({
     _id: uuidv4(),
-    Tipo: 'Comision Agente',
+    Tipo: "Comision Agente",
     Monto: 0,
-    Comentarios: '',
+    Comentarios: "",
     Porcentaje: 0,
   });
 
   const [movimiento, setMovimiento] = useState({
-    agente: '',
-    nombre: '',
-    cliente: '',
+    agente: "",
+    nombre: "",
+    cliente: "",
     cantidadTotal: 0,
     comisionAgente: 0,
     comisionOficina: 0,
-    estatusFactura: 'Pendiente',
-    estatusRetorno: 'Pendiente',
-    estatusDeposito: 'Pendiente',
+    estatusFactura: "Pendiente",
+    estatusRetorno: "Pendiente",
+    estatusDeposito: "Pendiente",
     totalDepositos: 0,
     totalRetornos: 0,
     totalComisiones: 0,
@@ -183,12 +183,12 @@ const NuevoMovimiento = () => {
     setDepositos([...depositos, deposito]);
     setDeposito({
       _id: uuidv4(),
-      bancoDeposito: '',
-      depositoMonto: '',
-      nombreDeposito: '',
-      comentarioDeposito: '',
+      bancoDeposito: "",
+      depositoMonto: "",
+      nombreDeposito: "",
+      comentarioDeposito: "",
       fechaDeposito: new Date(),
-      fechaDepositoStr: moment().format('YYYY/MM/DD'),
+      fechaDepositoStr: moment().format("YYYY/MM/DD"),
     });
   };
 
@@ -199,16 +199,16 @@ const NuevoMovimiento = () => {
     setRetornos([...retornos, retorno]);
     setRetorno({
       _id: uuidv4(),
-      nombreRetorno: '',
-      entidadRetorno: '',
-      retornoMonto: '',
-      comentarioRetorno: '',
-      cuentaRetorno: '',
-      formaRetorno: 'Efectivo',
-      Banco: '',
-      Cuenta_clabe: '',
-      codigoSwift: '',
-      direccionBanco: '',
+      nombreRetorno: "",
+      entidadRetorno: "",
+      retornoMonto: "",
+      comentarioRetorno: "",
+      cuentaRetorno: "",
+      formaRetorno: "Efectivo",
+      Banco: "",
+      Cuenta_clabe: "",
+      codigoSwift: "",
+      direccionBanco: "",
     });
   };
 
@@ -220,8 +220,8 @@ const NuevoMovimiento = () => {
     setComision({
       _id: uuidv4(),
       Monto: 0,
-      Tipo: 'Comision Agente',
-      Comentarios: '',
+      Tipo: "Comision Agente",
+      Comentarios: "",
       porcentaje: 0,
     });
   };
@@ -257,7 +257,7 @@ const NuevoMovimiento = () => {
     setDeposito({
       ...deposito,
       fechaDeposito: date,
-      fechaDepositoStr: date.format('YYYY/MM/DD'),
+      fechaDepositoStr: date.format("YYYY/MM/DD"),
     });
   };
 
@@ -291,7 +291,7 @@ const NuevoMovimiento = () => {
   const OnSaveMovimiento = () => {
     //dispatch(startSaveMovimiento(movimiento));
     const data = new FormData();
-    data.append('file', archivo[0]);
+    data.append("file", archivo[0]);
 
     const movimientoObj = {
       movimiento,
@@ -301,27 +301,27 @@ const NuevoMovimiento = () => {
     };
 
     const json = JSON.stringify(movimientoObj);
-    data.append('movimientoObj', json);
+    data.append("movimientoObj", json);
     try {
       const saveMovimiento = async () => {
         const response = await axios
           .post(process.env.REACT_APP_API + `/movimiento/nuevo`, data, {
-            Accept: 'application/json',
-            'content-type': 'multipart/form-data',
+            Accept: "application/json",
+            "content-type": "multipart/form-data",
           })
           .then(
             (response) => {
-              history.push('/movimientos');
-              console.log('Saved');
+              history.push("/movimientos");
+              console.log("Saved");
             },
             (error) => {
-              console.log('error', error);
+              console.log("error", error);
             }
           );
       };
       saveMovimiento();
     } catch (e) {
-      console.log('Error al guardar', e);
+      console.log("Error al guardar", e);
     }
   };
 
@@ -349,7 +349,13 @@ const NuevoMovimiento = () => {
       totalRetornos: totalRetornos,
       totalComisiones: totalComisiones,
     });
-  }, [totalDepositos, totalRetornos, totalComisiones]);
+  }, [
+    totalDepositos,
+    totalRetornos,
+    totalComisiones,
+    calculartotal,
+    movimiento,
+  ]);
 
   useEffect(() => {
     //consultamos con la api la base de datos llamamos startGetTickets
@@ -360,7 +366,7 @@ const NuevoMovimiento = () => {
       setAgentesList(response.data);
     };
     getAgentes();
-  }, []);
+  }, [setAgentesList]);
 
   const OnAgenteChange = (e) => {
     setMovimiento({
@@ -428,7 +434,7 @@ const NuevoMovimiento = () => {
     });
   };
   const asignarSolicitud = (asolicitud) => {
-    console.log('Solicitud Asignada', asolicitud);
+    console.log("Solicitud Asignada", asolicitud);
     setMovimiento({
       ...movimiento,
       solicitudId: solicitud._id,
@@ -582,21 +588,21 @@ const NuevoMovimiento = () => {
                   showPreviewsInDropzone={false}
                   useChipsForPreview
                   previewGridProps={{
-                    container: { spacing: 1, direction: 'row' },
+                    container: { spacing: 1, direction: "row" },
                   }}
                   previewChipProps={{ classes: { root: classes.previewChip } }}
                   previewText="Archivo cargado"
                   onChange={(file) => handleFileUpload(file)}
                   maxFileSize={3000000}
                   acceptedFiles={[
-                    '.xml',
-                    '.pdf',
-                    '.xlsx',
-                    '.xls',
-                    '.doc',
-                    '.docx',
-                    '.xml',
-                    '.csv',
+                    ".xml",
+                    ".pdf",
+                    ".xlsx",
+                    ".xls",
+                    ".doc",
+                    ".docx",
+                    ".xml",
+                    ".csv",
                   ]}
                   filesLimit={1}
                   initialFiles={archivo}
@@ -634,7 +640,7 @@ const NuevoMovimiento = () => {
           ModalState={ModalState}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleSaveAdd}
-          ButtonText={'Guardar'}
+          ButtonText={"Guardar"}
         >
           <Paper className={classes.paperModal}>
             {activeTab === 0 ? (
@@ -665,16 +671,16 @@ const NuevoMovimiento = () => {
           alertState={alertState}
           handleClose={toggleTake}
           handleTake={handleTake}
-          title={'Enlace facturación'}
+          title={"Enlace facturación"}
         >
-          {'Deseas asignar la solicitud de factura al movimiento?'}
+          {"Deseas asignar la solicitud de factura al movimiento?"}
         </AlertForm>
 
         <ModalForm
           ModalState={ModalStateFacturas}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleCloseAdd}
-          ButtonText={'CERRAR'}
+          ButtonText={"CERRAR"}
         >
           <Card>
             <CardHeader title="Asignar solicitud al movimiento" />

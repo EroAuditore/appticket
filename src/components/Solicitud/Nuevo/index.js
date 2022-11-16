@@ -1,16 +1,12 @@
-import React from 'react';
-import NuevaSolicitud from './NuevaSolicitud';
+import React from "react";
+import NuevaSolicitud from "./NuevaSolicitud";
 
-import SolicitudProvider from '../../Context/SolicitudContext';
-
+import SolicitudProvider from "../Context/SolicitudContext";
 
 export const Nuevo = () => {
-    
-
-    return ( 
-        <SolicitudProvider> 
-            <NuevaSolicitud />
-        </SolicitudProvider>
-     );
-}
- 
+  return (
+    <SolicitudProvider>
+      <NuevaSolicitud />
+    </SolicitudProvider>
+  );
+};

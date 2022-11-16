@@ -1,5 +1,4 @@
-import React, {useContext} from "react";
-import { MovimientoContext } from "../../../Context/MovimientoContext";
+import React, { useContext } from "react";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
@@ -9,10 +8,11 @@ import TableCell from "@material-ui/core/TableCell";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import NumberFormat from "react-number-format";
+import { MovimientoContext } from "./../../Context/MovimientoContext";
 
 const RetornosTab = (props) => {
   const { handleDeleteClick } = props;
-  const { retornos : data } = useContext(MovimientoContext);
+  const { retornos: data } = useContext(MovimientoContext);
 
   return (
     <Table aria-label="simple table">

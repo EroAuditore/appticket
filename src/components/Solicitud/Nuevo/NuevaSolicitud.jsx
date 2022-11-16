@@ -11,7 +11,7 @@ import {
   Tabs,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from "material-ui-dropzone";
 import CountUp from "react-countup";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -19,10 +19,10 @@ import { v4 as uuidv4 } from "uuid";
 import ModalForm from "./../../Common/ModalForm";
 import TabPanel from "./../../Common/TabPanel";
 import Form from "./Form";
-import DialogBox from './DialogBox';
-import { SolicitudContext } from './../../Context/SolicitudContext';
+import DialogBox from "./DialogBox";
+import { SolicitudContext } from "../Context/SolicitudContext";
 import FacturaCForm from "../Common/FacturaCForm";
-import FacturaTable from './FacturaTable';
+import FacturaTable from "./FacturaTable";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -59,11 +59,8 @@ const NuevaSolicitud = () => {
   const [ModalState, setModalState] = useState(false);
   const [archivo, setArchivo] = useState([]);
   const history = useHistory();
-  const {setAgentesList, 
-    setClientesList, 
-    setFacturas,
-    facturas
-  } = useContext(SolicitudContext);
+  const { setAgentesList, setClientesList, setFacturas, facturas } =
+    useContext(SolicitudContext);
 
   const [factura, setFactura] = useState({
     _id: uuidv4(),
@@ -91,8 +88,7 @@ const NuevaSolicitud = () => {
     Cliente: "",
     Comentarios: "",
     totalSolicitud: 0,
-    userId: null,//getCurrentUserID(),
-    
+    userId: null, //getCurrentUserID(),
   });
 
   const [partida, setPartida] = useState({
@@ -146,7 +142,7 @@ const NuevaSolicitud = () => {
       parseFloat(totalSolicitud) + parseFloat(factura.montoTotal)
     );
     setFactura({ ...factura, _id: uuidv4() });
-    setFacturas([...facturas, factura])
+    setFacturas([...facturas, factura]);
     setDialogState(false);
   };
 
@@ -162,56 +158,55 @@ const NuevaSolicitud = () => {
     setTotalSolicitud(
       parseFloat(totalSolicitud) - parseFloat(facturaEdit.montoTotal)
     );
-    setFacturas ( [
-        ...facturas.filter(factura => factura._id !== facturaEdit._id)
-      ])
-    
+    setFacturas([
+      ...facturas.filter((factura) => factura._id !== facturaEdit._id),
+    ]);
   };
 
   const onSaveSol = () => {
     const data = new FormData();
-    data.append('file', archivo[0]);
+    data.append("file", archivo[0]);
 
     const solicitudObj = {
-        solicitud,
-        facturas,
-      };
+      solicitud,
+      facturas,
+    };
     const json = JSON.stringify(solicitudObj);
 
-    data.append('solicitudObj', json);
+    data.append("solicitudObj", json);
 
     try {
       const saveSolicitud = async () => {
-        const response = await axios.post(process.env.REACT_APP_API + `/solicitud/guardar`, 
-        data, 
-        {
-          Accept: 'application/json',
-          'content-type': 'multipart/form-data',
-        }).then((response) => {
-          history.push("/solicitudes");
-          
-        }, (error) => {
-          console.log("error", error);
-        });
-        
-      }
+        const response = await axios
+          .post(process.env.REACT_APP_API + `/solicitud/guardar`, data, {
+            Accept: "application/json",
+            "content-type": "multipart/form-data",
+          })
+          .then(
+            (response) => {
+              history.push("/solicitudes");
+            },
+            (error) => {
+              console.log("error", error);
+            }
+          );
+      };
       saveSolicitud();
-    }catch(e){
-        console.log("Error al guardar", e);
+    } catch (e) {
+      console.log("Error al guardar", e);
     }
-    
   };
 
   useEffect(() => {
     //consultamos con la api la base de datos llamamos startGetTickets
     const getAgentes = async () => {
-        const response = await axios.get(process.env.REACT_APP_API + `/listado/agente`);
-        setAgentesList(response.data);
-      }
-      getAgentes()
-  }, []);
-
-  
+      const response = await axios.get(
+        process.env.REACT_APP_API + `/listado/agente`
+      );
+      setAgentesList(response.data);
+    };
+    getAgentes();
+  }, [setAgentesList]);
 
   const OnAgenteChange = (e) => {
     setSolicitud({
@@ -225,10 +220,13 @@ const NuevaSolicitud = () => {
     };
     //dispatch(startClientes(agente));
     const getClientes = async (agente) => {
-        const response = await axios.post(process.env.REACT_APP_API + `/filtro/agente`, agente);
-        setClientesList(response.data);
-      }
-    getClientes(agente);    
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/filtro/agente`,
+        agente
+      );
+      setClientesList(response.data);
+    };
+    getClientes(agente);
   };
 
   const OnClienteChange = (e) => {
@@ -243,18 +241,20 @@ const NuevaSolicitud = () => {
     };
     //dispatch(startCliente(cliente));
     const getCliente = async (cliente) => {
-        const response = await axios.post(process.env.REACT_APP_API + `/cliente/filtrar`, cliente);
-        
-        setFactura({
-            ...factura,
-            RFC: response.data[0].RFC,
-            Cliente: response.data[0].razonSocial,
-            email: response.data[0].email,
-            direccionCliente: response.data[0].direccion,
-          });
-      }
-    getCliente(cliente);    
-  
+      const response = await axios.post(
+        process.env.REACT_APP_API + `/cliente/filtrar`,
+        cliente
+      );
+
+      setFactura({
+        ...factura,
+        RFC: response.data[0].RFC,
+        Cliente: response.data[0].razonSocial,
+        email: response.data[0].email,
+        direccionCliente: response.data[0].direccion,
+      });
+    };
+    getCliente(cliente);
   };
 
   const handleCloseAdd = () => {
@@ -288,13 +288,13 @@ const NuevaSolicitud = () => {
     //   Archivo: file,
     // });
   };
-  const handledeleteFile =() =>{
-    console.log('delete:')
+  const handledeleteFile = () => {
+    console.log("delete:");
     setSolicitud({
       ...solicitud,
       Archivo: [],
     });
-  }
+  };
   const onCalculoTotal = () => {
     const { subTotal } = factura;
     setFactura({
@@ -306,7 +306,7 @@ const NuevaSolicitud = () => {
 
   useEffect(() => {
     setSolicitud({ ...solicitud, totalSolicitud: totalSolicitud });
-  }, [totalSolicitud]);
+  }, [solicitud, totalSolicitud]);
 
   return (
     <React.Fragment>
@@ -389,19 +389,30 @@ const NuevaSolicitud = () => {
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
-              <DropzoneArea
-                    showPreviews={true}
-                    showPreviewsInDropzone={false}
-                    useChipsForPreview
-                    previewGridProps={{container: { spacing: 1, direction: 'row' }}}
-                    previewChipProps={{classes: { root: classes.previewChip } }}
-                    previewText="Archivo cargado"
-                    onChange={(file) => handleFileUpload(file)}
-                    maxFileSize={3000000}
-                    acceptedFiles={[".xml", ".pdf", ".xlsx", ".xls", ".doc",".docx",".xml", ".csv"]}
-                    filesLimit={1}
-                    initialFiles={archivo}
-                  />
+                <DropzoneArea
+                  showPreviews={true}
+                  showPreviewsInDropzone={false}
+                  useChipsForPreview
+                  previewGridProps={{
+                    container: { spacing: 1, direction: "row" },
+                  }}
+                  previewChipProps={{ classes: { root: classes.previewChip } }}
+                  previewText="Archivo cargado"
+                  onChange={(file) => handleFileUpload(file)}
+                  maxFileSize={3000000}
+                  acceptedFiles={[
+                    ".xml",
+                    ".pdf",
+                    ".xlsx",
+                    ".xls",
+                    ".doc",
+                    ".docx",
+                    ".xml",
+                    ".csv",
+                  ]}
+                  filesLimit={1}
+                  initialFiles={archivo}
+                />
                 {/*<DropZone onChange={(file) => handleFileUpload(file)  } deleteFile={()=>handledeleteFile()} /> */}
               </TabPanel>
             </Paper>
@@ -417,7 +428,7 @@ const NuevaSolicitud = () => {
           ModalState={dialogState}
           handleCloseAdd={handleClose}
           handleSaveAdd={handleAddClick}
-          ButtonText ={"Guardar"}
+          ButtonText={"Guardar"}
         >
           <Paper className={classes.paperModal}>
             <FacturaCForm
@@ -432,7 +443,7 @@ const NuevaSolicitud = () => {
           ModalState={ModalState}
           handleCloseAdd={handleCloseAdd}
           handleSaveAdd={handleSaveAdd}
-          ButtonText ={"Guardar"}
+          ButtonText={"Guardar"}
         >
           <Paper className={classes.paperModal}>
             {/*<PartidaForm

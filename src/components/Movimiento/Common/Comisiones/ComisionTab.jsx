@@ -8,12 +8,12 @@ import TableCell from "@material-ui/core/TableCell";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import NumberFormat from "react-number-format";
-import { MovimientoContext } from './../../../Context/MovimientoContext';
+import { MovimientoContext } from "./../../Context/MovimientoContext";
 
 const ComisionTab = (props) => {
   const { handleDeleteClick } = props;
-  
-  const { comisiones : data } = useContext(MovimientoContext);
+
+  const { comisiones: data } = useContext(MovimientoContext);
   return (
     <Table aria-label="simple table">
       <TableHead>

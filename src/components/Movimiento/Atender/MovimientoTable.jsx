@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -6,7 +6,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
-import { MovimientoContext } from './../../Context/MovimientoContext';
+import { MovimientoContext } from "./../Context/MovimientoContext";
 
 import NumberFormat from "react-number-format";
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MovimientoTable = (props) => {
   const { depositos, comisiones, retornos } = useContext(MovimientoContext);
-  
+
   const classes = useStyles();
 
   return (
