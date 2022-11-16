@@ -9,7 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 const AgenteDialog = ({ open, handleClose, handleSave, nombre }) => {
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>Nuevo agente</DialogTitle>
       <DialogContent>
         <DialogContentText>Nombre del agente a crear.</DialogContentText>
@@ -25,8 +25,8 @@ const AgenteDialog = ({ open, handleClose, handleSave, nombre }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave}>Subscribe</Button>
+        <Button onClick={handleClose}>Cancelar</Button>
+        <Button onClick={handleSave}>Guardar</Button>
       </DialogActions>
     </Dialog>
   );

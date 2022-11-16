@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
+import * as React from "react";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import { Link } from "react-router-dom";
 import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
 import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
@@ -24,80 +24,61 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import PeopleIcon from "@material-ui/icons/People";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import NotificationProvider from "../Common/Context/NotificationContex";
+import NotificationSnack from "./../Common/Notification/NotificationSnack";
+import { Container } from "@material-ui/core";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
+const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
+  ({ theme, open }) => ({
     flexGrow: 1,
+    width: `calc(100% - ${drawerWidth}px)`,
     padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+      transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  })
+);
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  transition: theme.transitions.create(["margin", "width"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    // width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0,
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
-  },
-  grow: {
-    flexGrow: 1,
-  },
+  }),
 }));
 
-const Layout = ({ children }) => {
-  const classes = useStyles();
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-end",
+}));
+
+export default function Layout({ children }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [user, setUser] = useState(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -109,107 +90,104 @@ const Layout = ({ children }) => {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+
   return (
-    <React.Fragment>
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              Sistema de tickets
-            </Typography>
-            <div className={classes.grow} />
-          </Toolbar>
-        </AppBar>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={open}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{ mr: 2, ...(open && { display: "none" }) }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Persistent drawer
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          <ListItem
+            button
+            selected={selectedIndex === 0}
+            onClick={(event) => handleListItemClick(event, 0)}
+            component={Link}
+            to="/movimientos"
+          >
+            <ListItemIcon>
+              <ConfirmationNumberIcon />
+            </ListItemIcon>
+            <ListItemText primary="Movimientos" />
+          </ListItem>
 
-        <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </div>
+          <ListItem
+            button
+            selected={selectedIndex === 3}
+            onClick={(event) => handleListItemClick(event, 3)}
+            component={Link}
+            to="/solicitudes"
+          >
+            <ListItemIcon>
+              <SettingsBackupRestoreIcon />
+            </ListItemIcon>
+            <ListItemText primary="Solicitud Factura" />
+          </ListItem>
+
+          <ListItem
+            button
+            selected={selectedIndex === 4}
+            onClick={(event) => handleListItemClick(event, 4)}
+            component={Link}
+            to="/facturas"
+          >
+            <ListItemIcon>
+              <DescriptionIcon />
+            </ListItemIcon>
+            <ListItemText primary="Facturas" />
+          </ListItem>
           <Divider />
-          <List>
-            <ListItem
-              button
-              selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}
-              component={Link}
-              to="/movimientos"
-            >
-              <ListItemIcon>
-                <ConfirmationNumberIcon />
-              </ListItemIcon>
-              <ListItemText primary="Movimientos" />
-            </ListItem>
-
-            <ListItem
-              button
-              selected={selectedIndex === 3}
-              onClick={(event) => handleListItemClick(event, 3)}
-              component={Link}
-              to="/solicitudes"
-            >
-              <ListItemIcon>
-                <SettingsBackupRestoreIcon />
-              </ListItemIcon>
-              <ListItemText primary="Solicitud Factura" />
-            </ListItem>
-
-            <ListItem
-              button
-              selected={selectedIndex === 4}
-              onClick={(event) => handleListItemClick(event, 4)}
-              component={Link}
-              to="/facturas"
-            >
-              <ListItemIcon>
-                <DescriptionIcon />
-              </ListItemIcon>
-              <ListItemText primary="Facturas" />
-            </ListItem>
-            <Divider />
-            <ListItem
-              button
-              selected={selectedIndex === 5}
-              onClick={(event) => handleListItemClick(event, 5)}
-              component={Link}
-              to="/settings"
-            >
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Configuracion" />
-            </ListItem>
-          </List>
-          <Divider />
-
+          <ListItem
+            button
+            selected={selectedIndex === 5}
+            onClick={(event) => handleListItemClick(event, 5)}
+            component={Link}
+            to="/settings"
+          >
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Configuracion" />
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
           <ListItem
             button
             selected={selectedIndex === 6}
@@ -248,21 +226,16 @@ const Layout = ({ children }) => {
             </ListItemIcon>
             <ListItemText primary="Reportes" />
           </ListItem>
-        </Drawer>
-        <NotificationProvider>
-          <main
-            className={clsx(classes.content, {
-              [classes.contentShift]: open,
-            })}
-          >
-            <div className={classes.drawerHeader} />
+        </List>
+      </Drawer>
+      <NotificationProvider>
+        <Main open={open}>
+          <DrawerHeader />
 
-            {children}
-          </main>
-        </NotificationProvider>
-      </div>
-    </React.Fragment>
+          {children}
+          <NotificationSnack />
+        </Main>
+      </NotificationProvider>
+    </Box>
   );
-};
-
-export default Layout;
+}

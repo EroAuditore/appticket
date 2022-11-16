@@ -4,7 +4,8 @@ export const NotificationContext = createContext();
 
 const NotificationProvider = ({ children }) => {
   const [notification, setNotification] = useState(false);
-  const [notificationText, setNotificationText] = useState(false);
+  const [notificationText, setNotificationText] = useState("");
+  const [severity, setSeverity] = useState("");
 
   return (
     <NotificationContext.Provider
@@ -13,6 +14,8 @@ const NotificationProvider = ({ children }) => {
         setNotification,
         notificationText,
         setNotificationText,
+        severity,
+        setSeverity,
       }}
     >
       {children}
