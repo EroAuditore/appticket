@@ -1,27 +1,26 @@
-import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import { Grid, Container } from '@material-ui/core';
-import axios from 'axios';
-import Table from './Table';
-import ClienteModal from './ClienteModal';
-import SnackAlert from './../../Common/SnackAlert';
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
+import { Grid, Container } from "@material-ui/core";
+import axios from "axios";
+import Table from "./Table";
+import ClienteModal from "./ClienteModal";
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [agentes, setAgentes] = useState([]);
   const [agente, setAgente] = useState([]);
-  const [nombre, setNombre] = useState('');
+  const [nombre, setNombre] = useState("");
   const [cliente, setCliente] = useState({
-    nombre: '',
-    RFC: '',
-    direccion: '',
-    email: '',
+    nombre: "",
+    RFC: "",
+    direccion: "",
+    email: "",
     idAgente: 0,
   });
   const [modalState, setModalState] = useState(false);
-  const [SnackState, setSnackState] = useState(false);
-  const [severity, setSeverity] = useState('success');
-  const [msgSnack, setmsgSnack] = useState('Guardado exitoso');
+  // const [SnackState, setSnackState] = useState(false);
+  // const [severity, setSeverity] = useState('success');
+  // const [msgSnack, setmsgSnack] = useState('Guardado exitoso');
 
   useState(() => {
     const fetchAgentes = async () => {
@@ -63,22 +62,22 @@ const Clientes = () => {
       await axios
         .post(process.env.REACT_APP_API + `/cliente/nuevo`, cliente)
         .then((resp) => {
-          setSnackState(true);
+          // setSnackState(true);
           setModalState(false);
           setCliente({
-            nombre: '',
-            RFC: '',
-            direccion: '',
-            email: '',
+            nombre: "",
+            RFC: "",
+            direccion: "",
+            email: "",
             idAgente: 0,
           });
 
           setClientes(resp.data);
         })
         .catch((err) => {
-          setmsgSnack('Vuelva intentar guardar');
-          setSeverity('error');
-          setSnackState(true);
+          // setmsgSnack('Vuelva intentar guardar');
+          // setSeverity('error');
+          // setSnackState(true);
         });
     };
     console.log(cliente);
@@ -86,11 +85,11 @@ const Clientes = () => {
   };
 
   const closeSnack = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
-    setSnackState(false);
+    // setSnackState(false);
   };
 
   return (
@@ -120,12 +119,6 @@ const Clientes = () => {
         agentesList={agentes}
         agente={agente}
         OnAgenteChange={OnAgenteChange}
-      />
-      <SnackAlert
-        open={SnackState}
-        handleClose={closeSnack}
-        severity={severity}
-        message={msgSnack}
       />
     </>
   );
